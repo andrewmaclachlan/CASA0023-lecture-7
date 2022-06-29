@@ -32,7 +32,7 @@
     <script src="libs/tile-view/tile-view.js"></script>
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
-    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x830c78ed3aa45f695f2c9582e7ebef0","expires":1}</script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x22474ca75ea4dd1a79f0e0cc5ebed46","expires":1}</script>
     <script src="libs/himalaya/himalaya.js"></script>
     <link href="libs/editable/editable.css" rel="stylesheet" />
     <script src="libs/editable/editable.js"></script>
@@ -68,9 +68,9 @@ class: inverse, center, title-slide, middle
 
 # Remotely Sensing Cities and Environments
 
-### Lecture 6: Accuracy (Lecture 5 continued) and Temperature
+### Lecture 6: Classification The Big Questions (Lecture 5 continued) and Accuracy
 
-### 28/06/2022 (updated: 28/06/2022)
+### 28/06/2022 (updated: 29/06/2022)
 
 <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:white;overflow:visible;position:relative;"><path d="M476 3.2L12.5 270.6c-18.1 10.4-15.8 35.6 2.2 43.2L121 358.4l287.3-253.2c5.5-4.9 13.3 2.6 8.6 8.3L176 407v80.5c0 23.6 28.5 32.9 42.5 15.8L282 426l124.6 52.2c14.2 6 30.4-2.9 33-18.2l72-432C515 7.8 493.3-6.8 476 3.2z"/></svg>[a.maclachlan@ucl.ac.uk](mailto:a.maclachlan@ucl.ac.uk)
 <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:white;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>[andymaclachlan](https://twitter.com/andymaclachlan)
@@ -160,11 +160,11 @@ top:1em;right:1em;
 
 .pull-left[
 
-### Part 1: Example applcations
+### Part 1: Landcover classification (contiuned)
 
 
 
-### Part 2: Policy challenges
+### Part 2: Accuracy 
 
 ]
 
@@ -176,7 +176,235 @@ top:1em;right:1em;
 ---
 class: inverse, center, middle
 
-# Before we can explore policy we really need to look at what remotely sensed data can provide answers to...
+# What do we need (current or historic) landcover data for?
+
+---
+
+class: inverse, center, middle
+
+# Can we just used pre-classified data
+
+---
+
+# Pre-classified data
+
+* GlobeLand30 - 30m for 2000, 2010 and 2020: http://www.globallandcover.com/home_en.html?type=data   
+
+* European Space Agency’s (ESA) Climate Change Initiative (CCI) annual global land cover (300 m) (1992-2015): https://climate.esa.int/en/projects/land-cover/data/
+
+* Dynamic World - near real time 10m: https://www.dynamicworld.app/explore/ 
+  * A major benefit of an AI-powered approach is the model looks at an incoming Sentinel-2 satellite image and, for every pixel in the image, estimates the degree of tree cover, how built up a particular area is, or snow coverage if there’s been a recent snowstorm, for example
+
+* MODIS
+
+* Google building data: https://sites.research.google/open-buildings/ 
+
+---
+
+# Dynamic World 
+
+.panelset[
+
+.panel[.panel-name[Data]
+
+* Semi-supervised approach
+  * Divided World into regions (Western Hemisphere (160°W to 20°W), Eastern Hemisphere-1 (20°W to 100°E), and Eastern Hemisphere-2 (100°E to 160°W))
+  * Divided them into 14 Biomes 
+  * Stratified samples based on NASA MCD12Q1 land cover for 2017 + others
+]
+.panel[.panel-name[Training]
+
+* Expert group labeled approximately 4,000 image tiles  
+* Non-expert - 20,000
+* 409 image tiles were held back 
+* minimum mapping unit of 50 × 50 m (5 × 5 pixels) used Labelbox
+* label at least 70% of a tile within 20 to 60 minutes
+
+* skill differential between the non-expert and expert groups
+* linearly interpolating the distributions per-pixel from their one-hot encoding, weight on 0.2 experts and 0.3 non-experts
+
+]
+.panel[.panel-name[Pre-processing]
+
+* Use SR for labelling BUT used TOA (level L1C) for the model as SR only from 2017
+* Masked clouds and shadows
+* Weights for each pixel (I think these are the probabilities for each pixel based on the user weights)
+  * They work out the 
+* Augmentations - rotation of image (rotate them) bands (band ratioing) to improve model
+]
+
+.panel[.panel-name[Normalisation]
+
+* We first log-transform the raw reflectance values to equalize the long tail of highly reflective surfaces
+
+* remap percentiles of the log-transformed values to points on a sigmoid function
+
+* use these output values which reduce the value ranges
+]
+
+.panel[.panel-name[Classification]
+
+
+* Fully Convolutional Neural Network (FCNN)
+* Learns a mapping from estimated probabilities back to the input reflectances (synthesis model gradiet)
+  * basically means it is re-learning from the output data "the backward" model
+* Pass all normalized bands except B1, B8A, B9 and B10 after bilinear upscaling to ee.Model.predictImage.
+
+* Runs automatically after each new image
+
+* It looks blobby as the training data is 50x50m and also possibly CNN
+
+]
+
+.panel[.panel-name[Accuracy]
+
+
+* Accuracy is assessed through a **Confusion matrix** - see next slides
+  * This is a common approach in classification
+  
+* However, they note that this might not be appropriate:
+  * Different products
+  * Live updates 
+
+]
+
+.panel[.panel-name[Example]
+
+&lt;img src="img/dynamic_world.PNG" width="40%" style="display: block; margin: auto;" /&gt;
+
+.small[Visual comparison of Dynamic World (DW) to other global and regional LULC datasets for validation tile locations in (A) Brazil (−11.437°, −61.460°), (B) Norway, (61.724°, 6.484°), and (C) the United States (39.973°, −123.441°). Datasets used for comparison include 300 m European Space Agency (ESA) Climate Change Initiative (CCI); 100 m Copernicus Global Land Service (CGLS) ProbaV Land Cover dataset; 10 m ESA Sentinel-2 Global Land Cover (S2GLC) Europe 2019; 30 m MapBiomas Brazil dataset; and 30 m USGS National Land Cover Dataset (NLCD). Each map chip represents a 5.1 km by 5.1 km area with corresponding true-color (RGB) Sentinel-2 image shown in the first column. All products have been standardized to the same legend used for DW. Note differences in resolution as well as differences in the spatial distribution and coverage of land use land cover classes. Source:[Brown et al. 2022](https://www.nature.com/articles/s41597-022-01307-4#code-availability)]
+]
+
+.panel[.panel-name[Notes]
+
+* The training data is online and also used in the ESRI LULC 2020 map: https://doi.pangaea.de/10.1594/PANGAEA.933475?format=html#download
+
+* The code is online - see the paper.
+
+]
+]
+---
+class: inverse, center, middle
+
+
+# Before we progress....thoughts on this?
+
+--
+
+### What was the data (SR, TOA)
+
+### How was it trained
+
+### What are the issues
+
+### Do you think it's any good
+
+---
+
+class: inverse, center, middle
+
+# Next up 
+
+# Object based image analysis and sub pixel analysis
+
+---
+
+# Object based image analysis (OBIA)
+
+.pull-left[
+
+* Does a raster cell represent an object on the ground?
+
+* Instead of considering cells we consider shapes based on the similarity (homogeneity) or difference (heterogeneity) of the cells = **superpixels**
+
+* **SLIC** (Simple Linear Iterative Clustering) Algorithm for Superpixel generation is the [most common method](doi:10.1109/TPAMI.2012.120)
+  * regular points on the image 
+  * work out spatial distance (from point to centre of pixel) = **closeness to centre**
+  * colour difference (RGB vs RGB to centre point) = **homogenity of colours** 
+
+
+
+]
+
+.pull-right[
+
+&lt;img src="img/supercells.gif" width="40%" style="display: block; margin: auto;" /&gt;
+
+.small[Supercells Source:[Nowosad 2021](https://jakubnowosad.com/ogh2021/#10)]
+]
+
+]
+
+---
+
+# Object based image analysis (OBIA) 2
+
+.pull-left[
+
+* Each iteration the centre moves- 4-10 is best (based on orignal paper)
+
+* The values can change and the boarders move (like k-means?)
+
+* Doesn't consider connectivity = very small cells
+
+* Can enforce connectivity (remove small areas and merge them)
+
+* `\(S\)` = distance between initial points
+
+* `\(m\)` = compactness = balance between physical distance (larger value) and colour (spectral distance, then smaller `\(m\)`) 
+]
+
+.pull-right[
+
+* Can only use Euclidean distance in SLIC
+
+&lt;img src="img/SLIC.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+.small[Supercells Source:[Darshite Jain](https://darshita1405.medium.com/superpixels-and-slic-6b2d8a6e4f08)]
+]
+
+
+
+
+---
+
+# Object based image analysis (OBIA) 3
+
+
+.pull-left[
+
+* **Supercells** package can use any distance measure (e.g. dissimilarity)
+
+* `\(k\)` = number of super pixels
+
+* `\(compactness\)` = impact of spatial (higher) vs colour (lower)
+
+* `\(transform\)` = not on raw data, but to LAB colour space
+
+* We can then take the [average values per object](https://jakubnowosad.com/ogh2021/#24) and classify
+
+]
+
+.pull-right[
+&lt;img src="img/supercells2.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+.small[Supercells Source:[Nowosad 2021](https://jakubnowosad.com/ogh2021/#10)]
+]
+
+---
+# Object based image analysis (OBIA) 3
+
+
+Note that there are many OBIA classifiers, they all do similar, but slightly different processes - see Jensen page 415
+
+A more advanced package would be [**SegOptim**](https://segoptim.bitbucket.io/docs/)
+
+&lt;img src="img/segOptim.jpg" width="55%" style="display: block; margin: auto;" /&gt;
+
+.small[SegOptim Source:[João Gonçalves 2020](https://segoptim.bitbucket.io/docs/)]
+
+---
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

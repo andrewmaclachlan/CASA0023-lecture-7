@@ -63,7 +63,7 @@ library(fontawesome)
 
 # Remotely Sensing Cities and Environments
 
-### Lecture 6: Accuracy (Lecture 5 continued) and Temperature
+### Lecture 6: Classification The Big Questions (Lecture 5 continued) and Accuracy
 
 ### 28/06/2022 (updated: `r format(Sys.time(), "%d/%m/%Y")`)
 
@@ -110,11 +110,11 @@ xaringanExtra::use_logo(
 
 .pull-left[
 
-### Part 1: Example applcations
+### Part 1: Landcover classification (contiuned)
 
 
 
-### Part 2: Policy challenges
+### Part 2: Accuracy 
 
 ]
 
@@ -128,4 +128,242 @@ knitr::include_graphics('img/satellite.png')
 ---
 class: inverse, center, middle
 
-# Before we can explore policy we really need to look at what remotely sensed data can provide answers to...
+# What do we need (current or historic) landcover data for?
+
+---
+
+class: inverse, center, middle
+
+# Can we just used pre-classified data
+
+---
+
+# Pre-classified data
+
+* GlobeLand30 - 30m for 2000, 2010 and 2020: http://www.globallandcover.com/home_en.html?type=data   
+
+* European Space Agency’s (ESA) Climate Change Initiative (CCI) annual global land cover (300 m) (1992-2015): https://climate.esa.int/en/projects/land-cover/data/
+
+* Dynamic World - near real time 10m: https://www.dynamicworld.app/explore/ 
+  * A major benefit of an AI-powered approach is the model looks at an incoming Sentinel-2 satellite image and, for every pixel in the image, estimates the degree of tree cover, how built up a particular area is, or snow coverage if there’s been a recent snowstorm, for example
+
+* MODIS
+
+* Google building data: https://sites.research.google/open-buildings/ 
+
+---
+
+# Dynamic World 
+
+.panelset[
+
+.panel[.panel-name[Data]
+
+* Semi-supervised approach
+  * Divided World into regions (Western Hemisphere (160°W to 20°W), Eastern Hemisphere-1 (20°W to 100°E), and Eastern Hemisphere-2 (100°E to 160°W))
+  * Divided them into 14 Biomes 
+  * Stratified samples based on NASA MCD12Q1 land cover for 2017 + others
+]
+.panel[.panel-name[Training]
+
+* Expert group labeled approximately 4,000 image tiles  
+* Non-expert - 20,000
+* 409 image tiles were held back 
+* minimum mapping unit of 50 × 50 m (5 × 5 pixels) used Labelbox
+* label at least 70% of a tile within 20 to 60 minutes
+
+* skill differential between the non-expert and expert groups
+* linearly interpolating the distributions per-pixel from their one-hot encoding, weight on 0.2 experts and 0.3 non-experts
+
+]
+.panel[.panel-name[Pre-processing]
+
+* Use SR for labelling BUT used TOA (level L1C) for the model as SR only from 2017
+* Masked clouds and shadows
+* Weights for each pixel (I think these are the probabilities for each pixel based on the user weights)
+  * They work out the 
+* Augmentations - rotation of image (rotate them) bands (band ratioing) to improve model
+]
+
+.panel[.panel-name[Normalisation]
+
+* We first log-transform the raw reflectance values to equalize the long tail of highly reflective surfaces
+
+* remap percentiles of the log-transformed values to points on a sigmoid function
+
+* use these output values which reduce the value ranges
+]
+
+.panel[.panel-name[Classification]
+
+
+* Fully Convolutional Neural Network (FCNN)
+* Learns a mapping from estimated probabilities back to the input reflectances (synthesis model gradiet)
+  * basically means it is re-learning from the output data "the backward" model
+* Pass all normalized bands except B1, B8A, B9 and B10 after bilinear upscaling to ee.Model.predictImage.
+
+* Runs automatically after each new image
+
+* It looks blobby as the training data is 50x50m and also possibly CNN
+
+]
+
+.panel[.panel-name[Accuracy]
+
+
+* Accuracy is assessed through a **Confusion matrix** - see next slides
+  * This is a common approach in classification
+  
+* However, they note that this might not be appropriate:
+  * Different products
+  * Live updates 
+
+]
+
+.panel[.panel-name[Example]
+
+```{r echo=FALSE, out.width='40%', fig.align='center'}
+knitr::include_graphics('img/dynamic_world.PNG')
+```
+
+.small[Visual comparison of Dynamic World (DW) to other global and regional LULC datasets for validation tile locations in (A) Brazil (−11.437°, −61.460°), (B) Norway, (61.724°, 6.484°), and (C) the United States (39.973°, −123.441°). Datasets used for comparison include 300 m European Space Agency (ESA) Climate Change Initiative (CCI); 100 m Copernicus Global Land Service (CGLS) ProbaV Land Cover dataset; 10 m ESA Sentinel-2 Global Land Cover (S2GLC) Europe 2019; 30 m MapBiomas Brazil dataset; and 30 m USGS National Land Cover Dataset (NLCD). Each map chip represents a 5.1 km by 5.1 km area with corresponding true-color (RGB) Sentinel-2 image shown in the first column. All products have been standardized to the same legend used for DW. Note differences in resolution as well as differences in the spatial distribution and coverage of land use land cover classes. Source:[Brown et al. 2022](https://www.nature.com/articles/s41597-022-01307-4#code-availability)]
+]
+
+.panel[.panel-name[Notes]
+
+* The training data is online and also used in the ESRI LULC 2020 map: https://doi.pangaea.de/10.1594/PANGAEA.933475?format=html#download
+
+* The code is online - see the paper.
+
+]
+]
+---
+class: inverse, center, middle
+
+
+# Before we progress....thoughts on this?
+
+--
+
+### What was the data (SR, TOA)
+
+### How was it trained
+
+### What are the issues
+
+### Do you think it's any good
+
+---
+
+class: inverse, center, middle
+
+# Next up 
+
+# Object based image analysis and sub pixel analysis
+
+---
+
+# Object based image analysis (OBIA)
+
+.pull-left[
+
+* Does a raster cell represent an object on the ground?
+
+* Instead of considering cells we consider shapes based on the similarity (homogeneity) or difference (heterogeneity) of the cells = **superpixels**
+
+* **SLIC** (Simple Linear Iterative Clustering) Algorithm for Superpixel generation is the [most common method](doi:10.1109/TPAMI.2012.120)
+  * regular points on the image 
+  * work out spatial distance (from point to centre of pixel) = **closeness to centre**
+  * colour difference (RGB vs RGB to centre point) = **homogenity of colours** 
+
+
+
+]
+
+.pull-right[
+
+```{r echo=FALSE, out.width='40%', fig.align='center'}
+knitr::include_graphics('img/supercells.gif')
+```
+
+.small[Supercells Source:[Nowosad 2021](https://jakubnowosad.com/ogh2021/#10)]
+]
+
+]
+
+---
+
+# Object based image analysis (OBIA) 2
+
+.pull-left[
+
+* Each iteration the centre moves- 4-10 is best (based on orignal paper)
+
+* The values can change and the boarders move (like k-means?)
+
+* Doesn't consider connectivity = very small cells
+
+* Can enforce connectivity (remove small areas and merge them)
+
+* $S$ = distance between initial points
+
+* $m$ = compactness = balance between physical distance (larger value) and colour (spectral distance, then smaller $m$) 
+]
+
+.pull-right[
+
+* Can only use Euclidean distance in SLIC
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/SLIC.png')
+```
+
+.small[Supercells Source:[Darshite Jain](https://darshita1405.medium.com/superpixels-and-slic-6b2d8a6e4f08)]
+]
+
+
+
+
+---
+
+# Object based image analysis (OBIA) 3
+
+
+.pull-left[
+
+* **Supercells** package can use any distance measure (e.g. dissimilarity)
+
+* $k$ = number of super pixels
+
+* $compactness$ = impact of spatial (higher) vs colour (lower)
+
+* $transform$ = not on raw data, but to LAB colour space
+
+* We can then take the [average values per object](https://jakubnowosad.com/ogh2021/#24) and classify
+
+]
+
+.pull-right[
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/supercells2.png')
+```
+
+.small[Supercells Source:[Nowosad 2021](https://jakubnowosad.com/ogh2021/#10)]
+]
+
+---
+# Object based image analysis (OBIA) 3
+
+
+Note that there are many OBIA classifiers, they all do similar, but slightly different processes - see Jensen page 415
+
+A more advanced package would be [**SegOptim**](https://segoptim.bitbucket.io/docs/)
+
+```{r echo=FALSE, out.width='55%', fig.align='center'}
+knitr::include_graphics('img/segOptim.jpg')
+```
+
+.small[SegOptim Source:[João Gonçalves 2020](https://segoptim.bitbucket.io/docs/)]
+
+---
+
