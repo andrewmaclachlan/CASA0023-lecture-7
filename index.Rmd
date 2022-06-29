@@ -335,11 +335,13 @@ knitr::include_graphics('img/SLIC.png')
 
 * $k$ = number of super pixels
 
-* $compactness$ = impact of spatial (higher) vs colour (lower)
+* $compactness$ = impact of spatial (higher value) vs colour (lower value)
 
 * $transform$ = not on raw data, but to LAB colour space
 
-* We can then take the [average values per object](https://jakubnowosad.com/ogh2021/#24) and classify
+* We can then take the [average values per object](https://jakubnowosad.com/ogh2021/#24) and classify them using methods we've seen
+
+* Other metrics can also be computed - e.g. length to width ratio (see Jensen p.418)
 
 ]
 
@@ -357,7 +359,7 @@ knitr::include_graphics('img/supercells2.png')
 
 Note that there are many OBIA classifiers, they all do similar, but slightly different processes - see Jensen page 415
 
-A more advanced package would be [**SegOptim**](https://segoptim.bitbucket.io/docs/)
+A more advanced package would be [**SegOptim**](https://segoptim.bitbucket.io/docs/) that can use algorithms from other software
 
 ```{r echo=FALSE, out.width='55%', fig.align='center'}
 knitr::include_graphics('img/segOptim.jpg')
@@ -367,3 +369,112 @@ knitr::include_graphics('img/segOptim.jpg')
 
 ---
 
+# Sub pixel analysis 
+
+If you have a pixel composed of a range of land cover types should it **be classified as one landcover** or should **we calculate the proportions ?**
+
+```{r echo=FALSE, out.width='40%', fig.align='center'}
+knitr::include_graphics('img/high_res_medium_res.PNG')
+```
+
+.small[Comparison of true colour high spatial resolution data (a) (acquired from 14 March 2007) and Landsat surface reflectance (b) (acquired on 6 October 2007 [path 112]), highlighting the spatial detail captured by high-resolution imagery (c) and the same areas as observed by Landsat (d) for the subset East Beechboro used within this study Source:[MacLachlan et al. 2017](https://www.tandfonline.com/doi/pdf/10.1080/01431161.2017.1346403?needAccess=true&)]
+
+---
+
+# Sub pixel analysis 
+
+Termed (all the same):
+  * Sub pixel classification
+  * Spectral Mixture Analysis
+  * Linear spectral unmixing 
+
+
+https://jakob.schwalb-willmann.de/blog/spectral-unmixing-using-rstoolbox/
+
+http://bleutner.github.io/RStoolbox/rstbx-docu/RStoolbox.html
+
+---
+
+# Accuracy assessment
+
+After producing and output we need to assign an accuracy value to it (common to machine learning).
+
+.pull-left[
+
+In remote sensing we focus on:
+
+* PA Producer accuracy (recall or true positive rate or sensitivity)
+* UA User’s accuracy (consumer’s accuracy or precision or
+positive predictive value
+* OA the (overall) accuracy
+]
+
+.pull-right[
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/matrix.PNG')
+```
+
+.small[Source:[Barsi et al. 2018 Accuracy Dimensions in Remote Sensing](https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3/61/2018/isprs-archives-XLII-3-61-2018.pdf)]
+]
+
+---
+# Accuracy assessment 2
+
+.pull-left[
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/true_positive.png')
+```
+
+.small[Source:[PICO](https://www.pico.net/kb/what-is-a-false-positive-rate/)]
+]
+
+
+.pull-right[
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/matrix.PNG')
+```
+
+.small[Source:[Barsi et al. 2018 Accuracy Dimensions in Remote Sensing](https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3/61/2018/isprs-archives-XLII-3-61-2018.pdf)]
+]
+
+---
+
+
+# Accuracy assessment 3
+
+.pull-left[
+
+* **producer’s accuracy** defined as the fraction of correctly classified 
+pixels (TP) compared to ground truth data (TP+FN) $\frac{TP}{TP+FN}$
+
+* **user’s accuracy** defined as the fraction of correctly classified pixels (TP) relative to all others classified as a particular land cover(TP+FP) $\frac{TP}{TP+FP}$
+
+* **overall accuracy** that represents the combined  fraction of correctly classified pixels (TP +TN) across all land cover types (TP+FP+FN+TN) $\frac{TP +TN}{TP+FP+FN+TN}$
+
+]
+
+.pull-right[
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/matrix.PNG')
+```
+
+.small[Source:[Barsi et al. 2018 Accuracy Dimensions in Remote Sensing](https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3/61/2018/isprs-archives-XLII-3-61-2018.pdf)]
+]
+
+---
+
+# Accuracy assessment 4
+
+* Omission
+
+* Comission
+
+Example
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/example_matrix.PNG')
+```
+
+.small[Source:[Brown et al. 2022 Dynamic World, Near real-time global 10m land use land cover mapping](https://www.nature.com/articles/s41597-022-01307-4.pdf)]
