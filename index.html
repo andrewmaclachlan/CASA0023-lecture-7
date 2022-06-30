@@ -32,7 +32,7 @@
     <script src="libs/tile-view/tile-view.js"></script>
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
-    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x299d50d06bc4c5283230828bc4920d5","expires":1}</script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x0ce0fcf61e646debb1aa547016bc036","expires":1}</script>
     <script src="libs/himalaya/himalaya.js"></script>
     <link href="libs/editable/editable.css" rel="stylesheet" />
     <script src="libs/editable/editable.js"></script>
@@ -478,10 +478,15 @@ http://bleutner.github.io/RStoolbox/rstbx-docu/RStoolbox.html
 `$$p_\lambda=\sum_{i=1}^{n} (p_{i\lambda} * f_i) + e_\lambda$$`
 `\(p_\lambda\)` =  The pixel reflectance
 
+`\(p_i\lambda\)` = reflectance of endmember `\(i\)`
 
+`\(f_i\)` = fractional cover of end member `\(i\)`
 
+`\(n\)` = number of endmembers
 
-* Jensen page 480
+`\(e_\lambda\)` = model error
+
+See, Jensen page 480 - following example taken from there
 ]
 
 .pull-right[
@@ -492,8 +497,117 @@ http://bleutner.github.io/RStoolbox/rstbx-docu/RStoolbox.html
 
 ]
 
+
 ---
 
+# Sub pixel analysis 3
+
+Not as complicated as it looks...here are some end members for bands 3 and 4
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Band &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Water &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Vegetation &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Soil &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 70 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 60 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+We take the [inverse matrix](https://www.mathsisfun.com/algebra/matrix-inverse.html) of them ...
+
+`$$\begin{bmatrix}13 &amp; 22 &amp; 70\\
+5 &amp; 80 &amp; 60\\
+1 &amp; 1 &amp; 1
+\end{bmatrix} \begin{bmatrix}-0.0053 &amp; -0.0127 &amp; 1.1322\\
+-0.0145 &amp; 0.0150 &amp; 0.1137\\
+0.0198 &amp; -0.0024 &amp; -0.2460
+\end{bmatrix}$$`
+
+---
+# Sub pixel analysis 4
+
+
+Then solve ... if our values for the pixel are **25** (band 3) and **57** (band 4)the rows of the first matrix are multiplied by the columns of the second one
+
+`$$\begin{bmatrix}f_{water}\\
+f_{veg}\\
+f_{soil}
+\end{bmatrix}\begin{bmatrix}-0.0053 &amp; -0.0127 &amp; 1.1322\\
+-0.0145 &amp; 0.0150 &amp; 0.1137\\
+0.0198 &amp; -0.0024 &amp; -0.2460
+\end{bmatrix} \begin{bmatrix}25\\
+57\\
+1
+\end{bmatrix}$$`
+This looks like...(from [matrix  calculator](https://matrixcalc.org/en/))
+
+`$$\left(\begin{matrix}
+\frac{-53}{10000}*25+\frac{-127}{10000}*57+\frac{5661}{5000}*1 \\
+\frac{-29}{2000}*25+\frac{3}{200}*57+\frac{1137}{10000}*1 \\
+\frac{99}{5000}*25+\frac{-3}{1250}*57+\frac{-123}{500}*1
+\end{matrix}\right)$$`
+---
+# Sub pixel analysis 5
+
+And gives...
+`$$\begin{bmatrix}0.27\\
+0.61\\
+0.11
+\end{bmatrix}\begin{bmatrix}-0.0053 &amp; -0.0127 &amp; 1.1322\\
+-0.0145 &amp; 0.0150 &amp; 0.1137\\
+0.0198 &amp; -0.0024 &amp; -0.2460
+\end{bmatrix} \begin{bmatrix}25\\
+57\\
+1
+\end{bmatrix}$$`
+This means that within this pixel we have:
+
+* 27% water
+* 61% vegetation
+* 11% soil
+
+---
+# Sub pixel analysis 6
+
+Issues / considerations:
+
+.pull-left[
+
+* Pixel purity ?
+
+* Number of End members
+  * simplify the process and use the **V-I-S model** in urban areas: Vegetation-Impervious surface-Soil (V-I-S) fractions
+
+* Multiple endmember spectral analysis (MESMA)
+  * Increase computation
+  * or use a spectral library 
+]
+
+.pull-right[
+
+&lt;img src="img/VIS.PNG" width="100%" style="display: block; margin: auto;" /&gt;
+
+.small[Source:[Phinn et al. (2002) Monitoring the composition of urban environments based on the vegetation-impervious surface-soil (VIS) model by subpixel analysis techniques,](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=1046852)]
+
+]
+
+---
 # Accuracy assessment
 
 After producing and output we need to assign an accuracy value to it (common to machine learning).
