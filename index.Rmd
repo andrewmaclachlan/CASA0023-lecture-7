@@ -204,7 +204,37 @@ class: inverse, center, middle
 
 * Runs automatically after each new image
 
-* It looks blobby as the training data is 50x50m and also possibly CNN
+* It looks blobby as the training data is 50x50m and also CNN*
+
+
+]
+
+.panel[.panel-name[CNN]
+
+
+* Convolution Neural Network (ConvNet/CNN) form of **deep learning**
+
+* Deep learning is a sub section of machine learning focused on neural networks with big datasets
+
+* The potential issue here is with the convolution = a moving window filter (see next tab)
+
+* This is the start of the CNN process
+
+* Similar to texture, using a moving window.
+
+Further reading: [A Comprehensive Guide to Convolutional Neural Networks — the ELI5 way](https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53)
+
+
+
+]
+
+.panel[.panel-name[CNN 2]
+
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('img/conv.gif')
+```
+.small[Source:[Original from the British Library. Digitally enhanced by rawpixel.](https://www.rawpixel.com/image/571789/solar-generator-vintage-style)]
 
 ]
 
@@ -321,9 +351,6 @@ knitr::include_graphics('img/SLIC.png')
 .small[Supercells Source:[Darshite Jain](https://darshita1405.medium.com/superpixels-and-slic-6b2d8a6e4f08)]
 ]
 
-
-
-
 ---
 
 # Object based image analysis (OBIA) 3
@@ -383,15 +410,57 @@ knitr::include_graphics('img/high_res_medium_res.PNG')
 
 # Sub pixel analysis 
 
-Termed (all the same):
-  * Sub pixel classification
-  * Spectral Mixture Analysis
-  * Linear spectral unmixing 
+Termed (all the same): Sub pixel classification, Spectral Mixture Analysis (SMA), Linear spectral unmixing 
 
+.pull-left[
+
+* SMA determines the **proportion** or **abundance** of landcover per pixel
+
+* the assumption that reflectance measured at each pixel is represented by the linear sum of endmembers weighted by the associated endmember fraction
+
+* Typically we have a few endmembers that are **spectrally pure**
+]
+
+.pull-right[
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/Perfect-decomposition-with-a-Linear-Spectral-Mixture-Model-LSMM-on-a-30-m-pixel-formed.png')
+```
+
+.small[Source:[Machado and Small (2013) 2017](https://www.researchgate.net/figure/Perfect-decomposition-with-a-Linear-Spectral-Mixture-Model-LSMM-on-a-30-m-pixel-formed_fig6_259715697)]
+
+]
 
 https://jakob.schwalb-willmann.de/blog/spectral-unmixing-using-rstoolbox/
 
 http://bleutner.github.io/RStoolbox/rstbx-docu/RStoolbox.html
+
+---
+# Sub pixel analysis 2
+
+.pull-left[
+
+* Sum of end member reflectance * fraction contribution to best-fit mixed spectrum
+
+
+$$p_\lambda=\sum_{i=1}^{n} (p_{i\lambda} * f_i) + e_\lambda$$
+$p_\lambda$ =  The pixel reflectance
+
+
+
+
+* Jensen page 480
+]
+
+.pull-right[
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+  knitr::include_graphics('img/mixture.PNG')
+```
+
+.small[Source:[Plaza et al. (2002)](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1046852)]
+
+]
 
 ---
 
@@ -467,10 +536,6 @@ knitr::include_graphics('img/matrix.PNG')
 
 # Accuracy assessment 4
 
-* Omission
-
-* Comission
-
 Example
 
 ```{r echo=FALSE, out.width='100%', fig.align='center'}
@@ -478,3 +543,17 @@ knitr::include_graphics('img/example_matrix.PNG')
 ```
 
 .small[Source:[Brown et al. 2022 Dynamic World, Near real-time global 10m land use land cover mapping](https://www.nature.com/articles/s41597-022-01307-4.pdf)]
+
+---
+
+# Accuracy assessment 5
+
+Other metrics:
+
+* Kappa coefficient 
+
+* Errors of comission
+
+* Errors of omission
+
+

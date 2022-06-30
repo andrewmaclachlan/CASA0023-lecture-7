@@ -32,7 +32,7 @@
     <script src="libs/tile-view/tile-view.js"></script>
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
-    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"c05f2b5ce40e4c26a0183b95f8cd5ccc","expires":1}</script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x299d50d06bc4c5283230828bc4920d5","expires":1}</script>
     <script src="libs/himalaya/himalaya.js"></script>
     <link href="libs/editable/editable.css" rel="stylesheet" />
     <script src="libs/editable/editable.js"></script>
@@ -70,7 +70,7 @@ class: inverse, center, title-slide, middle
 
 ### Lecture 6: Classification The Big Questions (Lecture 5 continued) and Accuracy
 
-### 28/06/2022 (updated: 29/06/2022)
+### 28/06/2022 (updated: 30/06/2022)
 
 <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:white;overflow:visible;position:relative;"><path d="M476 3.2L12.5 270.6c-18.1 10.4-15.8 35.6 2.2 43.2L121 358.4l287.3-253.2c5.5-4.9 13.3 2.6 8.6 8.3L176 407v80.5c0 23.6 28.5 32.9 42.5 15.8L282 426l124.6 52.2c14.2 6 30.4-2.9 33-18.2l72-432C515 7.8 493.3-6.8 476 3.2z"/></svg>[a.maclachlan@ucl.ac.uk](mailto:a.maclachlan@ucl.ac.uk)
 <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:white;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>[andymaclachlan](https://twitter.com/andymaclachlan)
@@ -252,7 +252,35 @@ class: inverse, center, middle
 
 * Runs automatically after each new image
 
-* It looks blobby as the training data is 50x50m and also possibly CNN
+* It looks blobby as the training data is 50x50m and also CNN*
+
+
+]
+
+.panel[.panel-name[CNN]
+
+
+* Convolution Neural Network (ConvNet/CNN) form of **deep learning**
+
+* Deep learning is a sub section of machine learning focused on neural networks with big datasets
+
+* The potential issue here is with the convolution = a moving window filter (see next tab)
+
+* This is the start of the CNN process
+
+* Similar to texture, using a moving window.
+
+Further reading: [A Comprehensive Guide to Convolutional Neural Networks — the ELI5 way](https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53)
+
+
+
+]
+
+.panel[.panel-name[CNN 2]
+
+
+&lt;img src="img/conv.gif" width="100%" /&gt;
+.small[Source:[Original from the British Library. Digitally enhanced by rawpixel.](https://www.rawpixel.com/image/571789/solar-generator-vintage-style)]
 
 ]
 
@@ -363,9 +391,6 @@ class: inverse, center, middle
 .small[Supercells Source:[Darshite Jain](https://darshita1405.medium.com/superpixels-and-slic-6b2d8a6e4f08)]
 ]
 
-
-
-
 ---
 
 # Object based image analysis (OBIA) 3
@@ -419,15 +444,53 @@ If you have a pixel composed of a range of land cover types should it **be class
 
 # Sub pixel analysis 
 
-Termed (all the same):
-  * Sub pixel classification
-  * Spectral Mixture Analysis
-  * Linear spectral unmixing 
+Termed (all the same): Sub pixel classification, Spectral Mixture Analysis (SMA), Linear spectral unmixing 
 
+.pull-left[
+
+* SMA determines the **proportion** or **abundance** of landcover per pixel
+
+* the assumption that reflectance measured at each pixel is represented by the linear sum of endmembers weighted by the associated endmember fraction
+
+* Typically we have a few endmembers that are **spectrally pure**
+]
+
+.pull-right[
+
+&lt;img src="img/Perfect-decomposition-with-a-Linear-Spectral-Mixture-Model-LSMM-on-a-30-m-pixel-formed.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+.small[Source:[Machado and Small (2013) 2017](https://www.researchgate.net/figure/Perfect-decomposition-with-a-Linear-Spectral-Mixture-Model-LSMM-on-a-30-m-pixel-formed_fig6_259715697)]
+
+]
 
 https://jakob.schwalb-willmann.de/blog/spectral-unmixing-using-rstoolbox/
 
 http://bleutner.github.io/RStoolbox/rstbx-docu/RStoolbox.html
+
+---
+# Sub pixel analysis 2
+
+.pull-left[
+
+* Sum of end member reflectance * fraction contribution to best-fit mixed spectrum
+
+
+`$$p_\lambda=\sum_{i=1}^{n} (p_{i\lambda} * f_i) + e_\lambda$$`
+`\(p_\lambda\)` =  The pixel reflectance
+
+
+
+
+* Jensen page 480
+]
+
+.pull-right[
+
+&lt;img src="img/mixture.PNG" width="100%" style="display: block; margin: auto;" /&gt;
+
+.small[Source:[Plaza et al. (2002)](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=1046852)]
+
+]
 
 ---
 
@@ -495,15 +558,25 @@ pixels (TP) compared to ground truth data (TP+FN) `\(\frac{TP}{TP+FN}\)`
 
 # Accuracy assessment 4
 
-* Omission
-
-* Comission
-
 Example
 
 &lt;img src="img/example_matrix.PNG" width="100%" style="display: block; margin: auto;" /&gt;
 
 .small[Source:[Brown et al. 2022 Dynamic World, Near real-time global 10m land use land cover mapping](https://www.nature.com/articles/s41597-022-01307-4.pdf)]
+
+---
+
+# Accuracy assessment 5
+
+Other metrics:
+
+* Kappa coefficient 
+
+* Errors of comission
+
+* Errors of omission
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
