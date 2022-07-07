@@ -147,7 +147,7 @@ class: inverse, center, middle
 * Dynamic World - near real time 10m: https://www.dynamicworld.app/explore/ 
   * A major benefit of an AI-powered approach is the model looks at an incoming Sentinel-2 satellite image and, for every pixel in the image, estimates the degree of tree cover, how built up a particular area is, or snow coverage if there’s been a recent snowstorm, for example
 
-* MODIS
+* MODIS: https://modis.gsfc.nasa.gov/data/dataprod/mod12.php
 
 * Google building data: https://sites.research.google/open-buildings/ 
 
@@ -647,17 +647,291 @@ knitr::include_graphics('img/example_matrix.PNG')
 ```
 
 .small[Source:[Brown et al. 2022 Dynamic World, Near real-time global 10m land use land cover mapping](https://www.nature.com/articles/s41597-022-01307-4.pdf)]
-
+]
 ---
 
 # Accuracy assessment 5
 
-Other metrics:
+.pull-left[
 
-* Kappa coefficient 
+* Errors of omission (100-producer's accuracy)
+  * Have been omitted from correct class
+  * Type 1 error
+  * Urban = 1/23, 4%
+  * Urban producer = 22/23, 95.65%
+   
+* Errors of commission (100- user's accuracy)
+  * Reference sites left out from classification
+  * Urban = 9/31, 29%
+  * Urban user = 7/31, 22.58%
 
-* Errors of comission
+* Kappa coefficient
 
-* Errors of omission
+
+]
+
+.pull-right[
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/accuracy_2.png')
+```
+
+.small[Source:[Earth Systems Science and Remote Sensing](https://medium.com/@wenzhao.li1989/accuracy-assessment-d164e492274b)]
+]
+---
+# Accuracy assessment 6
+
+
+Producer accuracy ... 
+
+.pull-left[
+
+> i am pleased that 95.65 % of the urban area that was identified in the reference is urban in the classification 
+
+User accuracy ... 
+
+> as a user i only find that only 22.58% of the time when i visit an urban area is it acutally urban
+
+Overall accuracy is 77.89%
+
+* is this acceptable for the user? 
+
+* there is no single right choice for accuracy measurements
+
+]
+
+.pull-right[
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/accuracy_2.png')
+```
+
+.small[Source:[Earth Systems Science and Remote Sensing](https://medium.com/@wenzhao.li1989/accuracy-assessment-d164e492274b)]
+
+* This can also be changed to a fuzzy matrix (e.g. Decidous forest classified as evergreen forest - see Jensen p.575)
+
+]
+---
+# Accuracy assessment 8
+
+### To Kappa or not to Kappa?
+
+* Designed to express the accuracy of an image compared to the results by chance
+
+* Ranges from 0 to 1
+
+> "Sadly the calls to abandon the use of the kappa coefficient in accuracy assessment seem to have fallen on deaf ears. It may be that the kappa coefficient is still widely used because it has become ingrained in practice and there may be a sense of obligation to use it"
+
+.center[
+
+$k=\frac{p_o - p_e}{1- p_e}$
+]
+
+$p_o$ is the proportion of cases correctly classified (accuracy)
+
+$p_e$ expected cases correctly classified by chance (further equations in [Foody 2020](https://reader.elsevier.com/reader/sd/pii/S0034425719306509?token=47B253784FA5346F4A2E26B6DA796DBE71DC53A34AE76AAB1FFA43927EC021937C0C108A42154C4AE774083E4C7BD52F&originRegion=eu-west-1&originCreation=20220707132403))
+
+.small[Source:[Explaining the unsuitability of the kappa coefficient in the assessment and comparison of the accuracy of thematic maps obtained by image classification. Foody 2020](https://reader.elsevier.com/reader/sd/pii/S0034425719306509?token=47B253784FA5346F4A2E26B6DA796DBE71DC53A34AE76AAB1FFA43927EC021937C0C108A42154C4AE774083E4C7BD52F&originRegion=eu-west-1&originCreation=20220707132403)]
+---
+# Kappa issues 
+
+
+.pull-left[
+
+* What is a good value?
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/Kappa_issue1.png')
+```
+
+
+]
+
+.pull-right[
+
+* How Kappa values can we have for different levels of accuracy (on x axis )
+
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/Kappa_issue2.png')
+```
+
+]
+
+.small[Source:[Explaining the unsuitability of the kappa coefficient in the assessment and comparison of the accuracy of thematic maps obtained by image classification. Foody 2020](https://reader.elsevier.com/reader/sd/pii/S0034425719306509?token=47B253784FA5346F4A2E26B6DA796DBE71DC53A34AE76AAB1FFA43927EC021937C0C108A42154C4AE774083E4C7BD52F&originRegion=eu-west-1&originCreation=20220707132403)]
+---
+class: inverse, center, middle
+
+# Have i used Kappa? 
+
+
+---
+
+
+class: inverse, center, middle
+
+# In remote sensing this is typically where we'd stop...but not necessarily in machine learning 
+
+---
+
+class: inverse, center, middle
+
+# A brief overview...
+
+---
+
+# Beyond remote sensing 
+
+
+Beyond **traditional** remote sensing accuracy assessment...
+
+.pull-left[
+
+Problem with recall (Producer accuracy) vs Precision (User accuracy)
+
+False positives (Producer) or false negatives (User) more important?
+
+
+* model with high recall = true positives but some false positives (predicted urban but land cover that isn't urban)
+
+* Model with high precision = (actual urban but predicted other landcover)
+
+* See [MLU-explain](https://mlu-explain.github.io/precision-recall/) for an interactive example
+]
+
+.pull-right[
+
+```{r echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics('img/true_positive.png')
+```
+
+.small[Source:[PICO](https://www.pico.net/kb/what-is-a-false-positive-rate/)]
+
+
+```{r echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics('img/matrix.PNG')
+```
+
+.small[Source:[Barsi et al. 2018 Accuracy Dimensions in Remote Sensing](https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3/61/2018/isprs-archives-XLII-3-61-2018.pdf)]
+]
+
+---
+
+# F1 `r emo::ji("car")`
+
+.pull-left[
+
+The F1-Score (or F Measure) combines both recall (Producer accuracy) and Precision (User accuracy):
+
+
+
+* $F1 = \frac{TP}{TP + \frac{1}{2}*(FP+FN)}$
+
+
+
+* Value from 0 to 1, where 1 is better performance
+
+.small[Source:[MLU-EXPLAIN](https://mlu-explain.github.io/precision-recall/)]
+]
+
+
+.pull-right[
+```{r echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics('img/matrix.PNG')
+```
+
+.small[Source:[Barsi et al. 2018 Accuracy Dimensions in Remote Sensing](https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3/61/2018/isprs-archives-XLII-3-61-2018.pdf)]
+]
+
+---
+# Receiver Operating Characteristic Curve
+
+Receiver Operating Characteristic Curve (the ROC Curve)
+
+.pull-left[
+
+* Receiver Operating Characteristic Curve (the ROC Curve)
+
+* Originates from WW2, USA wanted to minimize noise from radar to identity (true positives) and not miss aircraft
+
+* **Changing the threshold value of classifier** will change the True Positive rate
+
+* Closer to 1 is what we want, below the random means the classifier is not any better than random. 
+
+]
+
+.pull-right[
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/ROC.png')
+```
+
+.small[Source:[MLU-EXPLAIN](https://mlu-explain.github.io/roc-auc/)]
+
+]
+
+---
+# Area Under the ROC Curve
+
+Area Under the ROC Curve (AUC, or AUROC)
+
+.pull-left[
+
+* Simply the area under the curve 
+
+* Compare models easily (no need to look at the ROC curve)
+
+* Perfect value will be 1, random will be 0.5
+
+> "The AUC is the probability that the model will rank a randomly chosen positive example more highly than a randomly chosen negative example."...
+
+e.g. model always give positive from true negative = AUC 0
+]
+
+.pull-right[
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/AUC.png')
+```
+
+.small[Source:[MLU-EXPLAIN](https://mlu-explain.github.io/roc-auc/)]
+
+]
+
+---
+class: inverse, center, middle
+
+# How to we get test data for the accuracy assessment?
+
+---
+
+# Remote sensing approach (sometimes) 
+
+* Simply go and collect ground truth data
+
+---
+
+# Good approach 
+
+
+
+---
+
+# Best approach 
+
+
+
+---
+# Remote sensing approach (sometimes) 
+
+
+
+
+---
+
+# Reading
+
+[Land Use Cover Datasets and Validation Tools](https://link.springer.com/content/pdf/10.1007/978-3-030-90998-7.pdf)
+
 
 
