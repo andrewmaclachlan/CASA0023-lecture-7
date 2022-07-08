@@ -32,7 +32,7 @@
     <script src="libs/tile-view/tile-view.js"></script>
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
-    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x34fe1a068254966a5e12e584c15e113","expires":1}</script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"d3e411e2bc7242a8a9d3d5471af21ab3","expires":1}</script>
     <script src="libs/himalaya/himalaya.js"></script>
     <link href="libs/editable/editable.css" rel="stylesheet" />
     <script src="libs/editable/editable.js"></script>
@@ -70,7 +70,7 @@ class: inverse, center, title-slide, middle
 
 ### Lecture 6: Classification The Big Questions (Lecture 5 continued) and Accuracy
 
-### 28/06/2022 (updated: 07/07/2022)
+### 28/06/2022 (updated: 08/07/2022)
 
 <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:white;overflow:visible;position:relative;"><path d="M476 3.2L12.5 270.6c-18.1 10.4-15.8 35.6 2.2 43.2L121 358.4l287.3-253.2c5.5-4.9 13.3 2.6 8.6 8.3L176 407v80.5c0 23.6 28.5 32.9 42.5 15.8L282 426l124.6 52.2c14.2 6 30.4-2.9 33-18.2l72-432C515 7.8 493.3-6.8 476 3.2z"/></svg>[a.maclachlan@ucl.ac.uk](mailto:a.maclachlan@ucl.ac.uk)
 <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:white;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>[andymaclachlan](https://twitter.com/andymaclachlan)
@@ -786,6 +786,9 @@ class: inverse, center, middle
 
 # Have i used Kappa? 
 
+--
+
+### See Jensen page 570
 
 ---
 
@@ -840,7 +843,6 @@ False positives (Producer) or false negatives (User) more important?
 .pull-left[
 
 The F1-Score (or F Measure) combines both recall (Producer accuracy) and Precision (User accuracy):
-
 
 
 * `\(F1 = \frac{TP}{TP + \frac{1}{2}*(FP+FN)}\)`
@@ -919,27 +921,132 @@ class: inverse, center, middle
 
 # Remote sensing approach (sometimes) 
 
-* Simply go and collect ground truth data
+
+.pull-left[
+
+Same process for all:
+
+  * class definition
+  * pre-processing
+  * training
+  * pixel assignment
+  * accuracy assessment
+
+Guidelines
+
+* Collect training data - suggested as around 250 pixels per class (Foody and Mather, 2006)
+
+* Simply go and collect (or use Google Earth) ground truth data - 50 per class (Congalton, 2001).
+
+* Produce an error matrix
+
+] 
+ 
+  
+.pull-right[
+&lt;img src="img/supervised-diagram.png" width="100%" style="display: block; margin: auto;" /&gt;
+.small[Source:[GIS Geography](https://gisgeography.com/supervised-unsupervised-classification-arcgis/)
+]
+]
+
 
 ---
 
-# Good approach 
+class: inverse, center, middle
+
+# Problems? 
+
+--
+
+### Chapter 13 in Jensen (p.557) cover accuracy assessment...but not the following
+
+
+---
+
+# Good approach - train and test split 
+
+
+* This is simply holding back a % of the original data used to train the model to then test it at the end
+
+* See the [validation section (10.6.7)](https://andrewmaclachlan.github.io/CASA0005repo_20192020/advanced-r-maup-and-more-regression.html) for an example in linear regression
+
+
+&lt;img src="img/train_test_split.png" width="100%" style="display: block; margin: auto;" /&gt;
+.small[Source:[Michael Galarnyk](https://towardsdatascience.com/understanding-train-test-split-scikit-learn-python-ea676d5e3d1)
+]
 
 
 
 ---
 
-# Best approach 
+class: inverse, center, middle
 
 
+# BUT..."Spatial autocorrelation between training and test sets"
+
+--
+
+## Remember spatial autocorrelation?
+
+--
+
+## A measure of similarity between nearby data...
 
 ---
-# Remote sensing approach (sometimes) 
+
+# Spatial dependence....
 
 
+Karasiak et al. 2022, [Spatial dependence between training and test sets: another pitfall of classification accuracy assessment in remote sensing](https://link.springer.com/article/10.1007/s10994-021-05972-1)
 
+&lt;img src="img/spatial_dependance.png" width="55%" style="display: block; margin: auto;" /&gt;
+.small[Average overall accuracy based on the RF classifier for each cross-validation strategy (k-fold CV, LOO CV, SLOO CV) at pixel and object levels. Models were fitted with reference samples of Herault-34 and repeated 10 times (i.e. the y-axis provides the average OA value ± standard deviation). The premature stopping of the pixel-based LOO and SLOO CV approaches was due to excessive computational time Source:[Karasiak et al. 2022](https://towardsdatascience.com/understanding-train-test-split-scikit-learn-python-ea676d5e3d1)
+]
+
+(1) a k-fold cross-validation (k-fold-CV) based on random splitting
+(2) a non-spatial leave-one-out cross-validation (LOO CV) 
+(3) a spatial leave-one-out cross-validation (SLOO CV) using a distance-based buffer relying on Moran’s I statistics.
 
 ---
+
+class: inverse, center, middle
+
+
+# Why do the objects perform better than the pixels?
+
+---
+
+
+# Best approach - cross validation
+
+.pull-left[
+
+Really classification of imagery is a machine learning task...
+
+..So why can't we apply the same methods?
+
+Perhaps as it is meant to be iterative...
+
+...e.g. the classifier underpredicts urban then you can go and adjust the training data...
+
+]
+
+.pull-right[
+&lt;img src="img/cross.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+.small[Source:[Wikipedia](https://en.wikipedia.org/wiki/Cross-validation_%28statistics%29)
+]
+]
+---
+# Best approach - cross validation 2
+
+Waldo Tobler's first Law of Geography...
+
+&gt; "everything is related to everything else, but near things are more related than distant things."
+
+* Are training and testing points too close in geographic space?
+
+---
+
 
 # Reading
 

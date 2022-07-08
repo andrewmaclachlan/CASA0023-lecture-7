@@ -764,6 +764,9 @@ class: inverse, center, middle
 
 # Have i used Kappa? 
 
+--
+
+### See Jensen page 570
 
 ---
 
@@ -822,7 +825,6 @@ knitr::include_graphics('img/matrix.PNG')
 .pull-left[
 
 The F1-Score (or F Measure) combines both recall (Producer accuracy) and Precision (User accuracy):
-
 
 
 * $F1 = \frac{TP}{TP + \frac{1}{2}*(FP+FN)}$
@@ -907,27 +909,140 @@ class: inverse, center, middle
 
 # Remote sensing approach (sometimes) 
 
-* Simply go and collect ground truth data
+
+.pull-left[
+
+Same process for all:
+
+  * class definition
+  * pre-processing
+  * training
+  * pixel assignment
+  * accuracy assessment
+
+Guidelines
+
+* Collect training data - suggested as around 250 pixels per class (Foody and Mather, 2006)
+
+* Simply go and collect (or use Google Earth) ground truth data - 50 per class (Congalton, 2001).
+
+* Produce an error matrix
+
+] 
+ 
+  
+.pull-right[
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/supervised-diagram.png')
+```
+.small[Source:[GIS Geography](https://gisgeography.com/supervised-unsupervised-classification-arcgis/)
+]
+]
+
 
 ---
 
-# Good approach 
+class: inverse, center, middle
+
+# Problems? 
+
+--
+
+### Chapter 13 in Jensen (p.557) cover accuracy assessment...but not the following
+
+
+---
+
+# Good approach - train and test split 
+
+
+* This is simply holding back a % of the original data used to train the model to then test it at the end
+
+* See the [validation section (10.6.7)](https://andrewmaclachlan.github.io/CASA0005repo_20192020/advanced-r-maup-and-more-regression.html) for an example in linear regression
+
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/train_test_split.png')
+```
+.small[Source:[Michael Galarnyk](https://towardsdatascience.com/understanding-train-test-split-scikit-learn-python-ea676d5e3d1)
+]
 
 
 
 ---
 
-# Best approach 
+class: inverse, center, middle
 
 
+# BUT..."Spatial autocorrelation between training and test sets"
+
+--
+
+## Remember spatial autocorrelation?
+
+--
+
+## A measure of similarity between nearby data...
 
 ---
-# Remote sensing approach (sometimes) 
+
+# Spatial dependence....
 
 
+Karasiak et al. 2022, [Spatial dependence between training and test sets: another pitfall of classification accuracy assessment in remote sensing](https://link.springer.com/article/10.1007/s10994-021-05972-1)
 
+```{r echo=FALSE, out.width='55%', fig.align='center'}
+knitr::include_graphics('img/spatial_dependance.png')
+```
+.small[Average overall accuracy based on the RF classifier for each cross-validation strategy (k-fold CV, LOO CV, SLOO CV) at pixel and object levels. Models were fitted with reference samples of Herault-34 and repeated 10 times (i.e. the y-axis provides the average OA value ± standard deviation). The premature stopping of the pixel-based LOO and SLOO CV approaches was due to excessive computational time Source:[Karasiak et al. 2022](https://towardsdatascience.com/understanding-train-test-split-scikit-learn-python-ea676d5e3d1)
+]
+
+(1) a k-fold cross-validation (k-fold-CV) based on random splitting
+(2) a non-spatial leave-one-out cross-validation (LOO CV) 
+(3) a spatial leave-one-out cross-validation (SLOO CV) using a distance-based buffer relying on Moran’s I statistics.
 
 ---
+
+class: inverse, center, middle
+
+
+# Why do the objects perform better than the pixels?
+
+---
+
+
+# Best approach - cross validation
+
+.pull-left[
+
+Really classification of imagery is a machine learning task...
+
+..So why can't we apply the same methods?
+
+Perhaps as it is meant to be iterative...
+
+...e.g. the classifier underpredicts urban then you can go and adjust the training data...
+
+]
+
+.pull-right[
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/cross.jpg')
+```
+.small[Source:[Wikipedia](https://en.wikipedia.org/wiki/Cross-validation_%28statistics%29)
+]
+]
+---
+# Best approach - cross validation 2
+
+Waldo Tobler's first Law of Geography...
+
+> "everything is related to everything else, but near things are more related than distant things."
+
+* Are training and testing points too close in geographic space?
+
+---
+
 
 # Reading
 
