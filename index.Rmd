@@ -431,10 +431,7 @@ knitr::include_graphics('img/Perfect-decomposition-with-a-Linear-Spectral-Mixtur
 
 ]
 
-https://jakob.schwalb-willmann.de/blog/spectral-unmixing-using-rstoolbox/
-
-http://bleutner.github.io/RStoolbox/rstbx-docu/RStoolbox.html
-
+In R we can [use MESMA from the package RStoolbox](https://jakob.schwalb-willmann.de/blog/spectral-unmixing-using-rstoolbox/) 
 ---
 # Sub pixel analysis 2
 
@@ -920,7 +917,7 @@ Same process for all:
   * pixel assignment
   * accuracy assessment
 
-Guidelines
+**Guidelines**
 
 * Collect training data - suggested as around 250 pixels per class (Foody and Mather, 2006)
 
@@ -937,6 +934,13 @@ knitr::include_graphics('img/supervised-diagram.png')
 ```
 .small[Source:[GIS Geography](https://gisgeography.com/supervised-unsupervised-classification-arcgis/)
 ]
+
+* You would need to consider a **sampling strategy**
+
+  * Random sampling
+  * Systematic sampling
+  * Stratified sampling
+  * Jensen p. 565
 ]
 
 
