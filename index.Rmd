@@ -264,7 +264,15 @@ knitr::include_graphics('img/dynamic_world.PNG')
 * The training data is online and also used in the ESRI LULC 2020 map: https://doi.pangaea.de/10.1594/PANGAEA.933475?format=html#download
 
 * The code is online - see the paper.
+]
+.panel[.panel-name[Radiant MLHub]
 
+* At the same time (sadly) [Radiant MLHub](https://mlhub.earth/) launched the first open library dedicated to EO training for machine learning...
+
+```{r echo=FALSE, out.width='45%', fig.align='center'}
+knitr::include_graphics('img/landcovernet.png')
+```
+.small[Source:[Radiant MLHub](https://mlhub.earth/datasets?search=landcovernet)]
 ]
 ]
 ---
