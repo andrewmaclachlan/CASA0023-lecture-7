@@ -474,7 +474,7 @@ See, Jensen page 480 - following example taken from there
 
 Not as complicated as it looks...here are some end members for bands 3 and 4
 
-```{r echo=FALSE, out.width='100%', fig.align='center'}
+```{r echo=FALSE, out.width='100%', fig.align='center', message=FALSE}
 library(ggplot2)
 library(tidyverse)
 Band <- c(3,4)
@@ -1045,12 +1045,18 @@ Waldo Tobler's first Law of Geography...
 
 > ‘Training’ observations near the ‘test’ observations can provide a kind of ‘sneak preview’: information that should be unavailable to the training dataset. 
 
-https://geocompr.robinlovelace.net/spatial-cv.html
+.small[Source:[Lovelace et al. 2022](https://geocompr.robinlovelace.net/spatial-cv.html#intro-cv)]
+
+---
 
 
-https://machinelearningmastery.com/loocv-for-evaluating-machine-learning-algorithms/#:~:text=fold%20Cross%2DValidation-,Leave%2Done%2Dout%20cross%2Dvalidation%2C%20or%20LOOCV%2C,has%20the%20maximum%20computational%20cost.
 
-https://machinelearningmastery.com/k-fold-cross-validation/
+```{r echo=FALSE, out.width='60%', fig.align='center'}
+knitr::include_graphics('img/more_related.jpg')
+```
+.small[Source:[Spatial is Special](https://www.e-education.psu.edu/maps/l2_p2.html)]
+
+
 ---
 
 class: inverse, center, middle
@@ -1214,6 +1220,22 @@ class: inverse, center, middle
 
 # Summary 
 
+* How should we consider / process EO data, **objects, pixels, mixels (mixed pixel), mixed objects ?**
+
+* What **data should we use assess the accuracy** of our classification models 
+  * New dataset to test the output with
+  * Train / split the training data
+  * Cross validation 
+
+* When we have a test dataset **how do we assess the accuracy** 
+  * Error matrix 
+  * Kappa 
+  
+* When training and testing our classification models do we need to **consider spatial autocorrelation?** Do the following help 
+
+  * Object based image analysis 
+  * Spatial cross validation
+
 
 ---
 
@@ -1241,5 +1263,11 @@ https://doodles.mountainmath.ca/blog/2019/10/07/spatial-autocorrelation-co/
 https://geocompr.robinlovelace.net/spatial-cv.html
 
 https://link.springer.com/article/10.1007/s10994-021-05972-1
+
+https://geocompr.robinlovelace.net/spatial-cv.html
+
+https://machinelearningmastery.com/loocv-for-evaluating-machine-learning-algorithms/#:~:text=fold%20Cross%2DValidation-,Leave%2Done%2Dout%20cross%2Dvalidation%2C%20or%20LOOCV%2C,has%20the%20maximum%20computational%20cost.
+
+https://machinelearningmastery.com/k-fold-cross-validation/
 
 ---

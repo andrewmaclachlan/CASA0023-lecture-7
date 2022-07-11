@@ -32,7 +32,7 @@
     <script src="libs/tile-view/tile-view.js"></script>
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
-    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"e32dbd0771cb41dcbd279c407e2c7784","expires":1}</script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x29498420b3a41269033a9e423e44d90","expires":1}</script>
     <script src="libs/himalaya/himalaya.js"></script>
     <link href="libs/editable/editable.css" rel="stylesheet" />
     <script src="libs/editable/editable.js"></script>
@@ -503,24 +503,6 @@ See, Jensen page 480 - following example taken from there
 # Sub pixel analysis 3
 
 Not as complicated as it looks...here are some end members for bands 3 and 4
-
-
-```
-## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
-```
-
-```
-## ✔ tibble  3.1.7     ✔ dplyr   1.0.9
-## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
-## ✔ readr   2.1.2     ✔ forcats 0.5.1
-## ✔ purrr   0.3.4
-```
-
-```
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()
-```
 
 &lt;table&gt;
  &lt;thead&gt;
@@ -1067,12 +1049,16 @@ Waldo Tobler's first Law of Geography...
 
 &gt; ‘Training’ observations near the ‘test’ observations can provide a kind of ‘sneak preview’: information that should be unavailable to the training dataset. 
 
-https://geocompr.robinlovelace.net/spatial-cv.html
+.small[Source:[Lovelace et al. 2022](https://geocompr.robinlovelace.net/spatial-cv.html#intro-cv)]
+
+---
 
 
-https://machinelearningmastery.com/loocv-for-evaluating-machine-learning-algorithms/#:~:text=fold%20Cross%2DValidation-,Leave%2Done%2Dout%20cross%2Dvalidation%2C%20or%20LOOCV%2C,has%20the%20maximum%20computational%20cost.
 
-https://machinelearningmastery.com/k-fold-cross-validation/
+&lt;img src="img/more_related.jpg" width="60%" style="display: block; margin: auto;" /&gt;
+.small[Source:[Spatial is Special](https://www.e-education.psu.edu/maps/l2_p2.html)]
+
+
 ---
 
 class: inverse, center, middle
@@ -1222,6 +1208,22 @@ class: inverse, center, middle
 
 # Summary 
 
+* How should we consider / process EO data, **objects, pixels, mixels (mixed pixel), mixed objects ?**
+
+* What **data should we use assess the accuracy** of our classification models 
+  * New dataset to test the output with
+  * Train / split the training data
+  * Cross validation 
+
+* When we have a test dataset **how do we assess the accuracy** 
+  * Error matrix 
+  * Kappa 
+  
+* When training and testing our classification models do we need to **consider spatial autocorrelation?** Do the following help 
+
+  * Object based image analysis 
+  * Spatial cross validation
+
 
 ---
 
@@ -1249,6 +1251,12 @@ https://doodles.mountainmath.ca/blog/2019/10/07/spatial-autocorrelation-co/
 https://geocompr.robinlovelace.net/spatial-cv.html
 
 https://link.springer.com/article/10.1007/s10994-021-05972-1
+
+https://geocompr.robinlovelace.net/spatial-cv.html
+
+https://machinelearningmastery.com/loocv-for-evaluating-machine-learning-algorithms/#:~:text=fold%20Cross%2DValidation-,Leave%2Done%2Dout%20cross%2Dvalidation%2C%20or%20LOOCV%2C,has%20the%20maximum%20computational%20cost.
+
+https://machinelearningmastery.com/k-fold-cross-validation/
 
 ---
     </textarea>
