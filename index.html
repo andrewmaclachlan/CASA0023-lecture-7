@@ -32,7 +32,7 @@
     <script src="libs/tile-view/tile-view.js"></script>
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
-    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"d3e411e2bc7242a8a9d3d5471af21ab3","expires":1}</script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"e32dbd0771cb41dcbd279c407e2c7784","expires":1}</script>
     <script src="libs/himalaya/himalaya.js"></script>
     <link href="libs/editable/editable.css" rel="stylesheet" />
     <script src="libs/editable/editable.js"></script>
@@ -70,7 +70,7 @@ class: inverse, center, title-slide, middle
 
 ### Lecture 6: Classification The Big Questions (Lecture 5 continued) and Accuracy
 
-### 28/06/2022 (updated: 08/07/2022)
+### 28/06/2022 (updated: 11/07/2022)
 
 <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:white;overflow:visible;position:relative;"><path d="M476 3.2L12.5 270.6c-18.1 10.4-15.8 35.6 2.2 43.2L121 358.4l287.3-253.2c5.5-4.9 13.3 2.6 8.6 8.3L176 407v80.5c0 23.6 28.5 32.9 42.5 15.8L282 426l124.6 52.2c14.2 6 30.4-2.9 33-18.2l72-432C515 7.8 493.3-6.8 476 3.2z"/></svg>[a.maclachlan@ucl.ac.uk](mailto:a.maclachlan@ucl.ac.uk)
 <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:white;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>[andymaclachlan](https://twitter.com/andymaclachlan)
@@ -503,6 +503,24 @@ See, Jensen page 480 - following example taken from there
 # Sub pixel analysis 3
 
 Not as complicated as it looks...here are some end members for bands 3 and 4
+
+
+```
+## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+```
+
+```
+## ✔ tibble  3.1.7     ✔ dplyr   1.0.9
+## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
+## ✔ readr   2.1.2     ✔ forcats 0.5.1
+## ✔ purrr   0.3.4
+```
+
+```
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+```
 
 &lt;table&gt;
  &lt;thead&gt;
@@ -1038,22 +1056,201 @@ Perhaps as it is meant to be iterative...
 ]
 ---
 # Best approach - cross validation 2
-
+
 Waldo Tobler's first Law of Geography...
 
 &gt; "everything is related to everything else, but near things are more related than distant things."
 
 * Are training and testing points too close in geographic space?
 
+* How can we deal with taking a sample of training data for testing when they are possibly from the same polygon of training data...
+
+&gt; ‘Training’ observations near the ‘test’ observations can provide a kind of ‘sneak preview’: information that should be unavailable to the training dataset. 
+
+https://geocompr.robinlovelace.net/spatial-cv.html
+
+
+https://machinelearningmastery.com/loocv-for-evaluating-machine-learning-algorithms/#:~:text=fold%20Cross%2DValidation-,Leave%2Done%2Dout%20cross%2Dvalidation%2C%20or%20LOOCV%2C,has%20the%20maximum%20computational%20cost.
+
+https://machinelearningmastery.com/k-fold-cross-validation/
 ---
 
+class: inverse, center, middle
+
+
+# Spatial cross validation 
+
+
+---
+
+#  Spatial cross validation 2
+
+.pull-left[
+
+* spatially partition the folded data
+
+* disjoint using k -means clustering 
+
+* same as cross validaton but with clustering to the folds...
+
+]
+
+.pull-right[
+&lt;img src="img/13_partitioning.png" width="100%" style="display: block; margin: auto;" /&gt;
+.small[Spatial visualization of selected test and training observations for cross-validation of one repetition. Random (upper row) and spatial partitioning (lower row). Source:[Lovelace et al. 2022](https://geocompr.robinlovelace.net/spatial-cv.html)
+]
+]
+
+---
+
+#  Spatial cross validation 3
+
+Lovelace et al. (2022) use a Support Vector Machine classifier that requires hyperparameters (set before the classification)
+
+Standard SVM then the classifier will try to **overfit** = perfect for the current data but useless for anything else...
+
+Cortes and Vapnik - **soft margin**, permit classifications = controlled with **C**
+
+.pull-left[
+
+&lt;img src="img/overfit.png" width="60%" style="display: block; margin: auto;" /&gt;
+.small[Source:[Soner Yildirim](https://towardsdatascience.com/hyperparameter-tuning-for-support-vector-machines-c-and-gamma-parameters-6a5097416167)
+]
+]
+
+.pull-right[
+
+&lt;img src="img/soft_SVM.png" width="60%" style="display: block; margin: auto;" /&gt;
+.small[Source:[Soner Yildirim](https://towardsdatascience.com/hyperparameter-tuning-for-support-vector-machines-c-and-gamma-parameters-6a5097416167)
+]
+
+]
+* **C** = adds penalty (proportional to distance from decision line) for each classified point. Small = image on right, large = image on left
+
+.small[Source:[Soner Yildirim](https://towardsdatascience.com/hyperparameter-tuning-for-support-vector-machines-c-and-gamma-parameters-6a5097416167)
+]
+
+---
+
+#  Spatial cross validation 4
+
+Lovelace et al. (2022) use a Support Vector Machine classifier that requires hyperparameters (set before the classification)
+
+
+* **Gamma (or also called Sigma)** = controls the influence of a training point within the classified data
+  * low = big radius and many points in same group
+  * high = low radius and many groups
+  
+  
+.pull-left[
+
+&lt;img src="img/low_gamma.png" width="60%" style="display: block; margin: auto;" /&gt;
+.small[Source:[Soner Yildirim](https://towardsdatascience.com/hyperparameter-tuning-for-support-vector-machines-c-and-gamma-parameters-6a5097416167)
+]
+]
+
+.pull-right[
+
+&lt;img src="img/high_gamma.png" width="60%" style="display: block; margin: auto;" /&gt;
+.small[Source:[Soner Yildirim](https://towardsdatascience.com/hyperparameter-tuning-for-support-vector-machines-c-and-gamma-parameters-6a5097416167)
+]
+]
+
+.small[Source:[Soner Yildirim](https://towardsdatascience.com/hyperparameter-tuning-for-support-vector-machines-c-and-gamma-parameters-6a5097416167)
+]
+---
+
+#  Spatial cross validation 5
+
+* **Performance level** each spatial fold (taken from our first k-means cross validation fold division). = Top row below
+
+* **Tuning level** each fold (outer) is then divided into 5 again (inner fold).= Bottom row below
+
+*  **Performance estimation** we fit 50 models with random **C** and **Gamma** use the best values to outer fold = **AUROC**
+
+
+&lt;img src="img/13_cv.png" width="75%" style="display: block; margin: auto;" /&gt;
+.small[Schematic of hyperparameter tuning and performance estimation levels in CV. (Figure was taken from Schratz et al. (2019).. Source:[Lovelace et al. 2022](https://geocompr.robinlovelace.net/spatial-cv.html)
+]
+
+---
+
+#  Spatial cross validation 6
+
+
+.pull-left[
+
+**Here we have..**.
+
+* 1 outer fold has 5 inner folds with 50 models = 250 models for **C** and **Gamma**
+
+It's 5 (outer fold)
+
+* Each repetition =  1,250 (250 * 5) 
+
+It's 100 times repeated (5 fold cross validation)
+
+* 125,000 models for best hyperparameters
+
+]
+
+.pull-right[
+
+**So .... what**
+
+&lt;img src="img/boxplot-cv-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+.small[Boxplot showing the difference in GLM AUROC values on spatial and conventional 100-repeated 5-fold cross-validation. Source:[Lovelace et al. 2022](https://geocompr.robinlovelace.net/spatial-cv.html)
+]
+
+]
+
+---
+
+class: inverse, center, middle
+
+# Question: What happens if a classificaiton model doesn't consider spatial autocorrelation ?
+
+---
+
+
+class: inverse, center, middle
+
+# Question: What methods can we use to deal with it?
+
+
+---
+
+# Summary 
+
+
+---
+
+# Task 
+
+For the individual assignment of the module you are required to produce a online portfolio of independent study and response questions.
+
+For the task this week you need to:
+
+* Select **two academic or policy papers / policy targets** that have performed some form of classification on earth observation data. In a maximum of three paragraphs:
+  * Briefly state what classification method was used
+  * Outline how accuracy was assessed
+  * Critically reflect on if it was the best approach to assess the accuracy within that paper and (if necessary) explain and justify possible improvements
+  * **Note**, it is fine to consider papers/policies may have included a classified product as part of another model such as we saw in lecture 4.
+  
+  
+---
 
 # Reading
 
 [Land Use Cover Datasets and Validation Tools](https://link.springer.com/content/pdf/10.1007/978-3-030-90998-7.pdf)
 
+https://doodles.mountainmath.ca/blog/2019/10/07/spatial-autocorrelation-co/
 
+https://geocompr.robinlovelace.net/spatial-cv.html
 
+https://link.springer.com/article/10.1007/s10994-021-05972-1
+
+---
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
