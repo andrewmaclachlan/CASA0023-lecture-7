@@ -32,7 +32,7 @@
     <script src="libs/tile-view/tile-view.js"></script>
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
-    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x6cb51a457cb48d4b1de17477b0d3395","expires":1}</script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"xb3f4fd5d69c4a95849497129660d366","expires":1}</script>
     <script src="libs/himalaya/himalaya.js"></script>
     <link href="libs/editable/editable.css" rel="stylesheet" />
     <script src="libs/editable/editable.js"></script>
@@ -74,7 +74,7 @@ background-position: center
 
 ### Lecture 7: Classification The Big Questions (Lecture 6 continued) and Accuracy
 
-### 28/06/2022 (updated: 06/02/2023)
+### 28/06/2022 (updated: 24/02/2023)
 
 <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#562457;overflow:visible;position:relative;"><path d="M511.6 36.86l-64 415.1c-1.5 9.734-7.375 18.22-15.97 23.05c-4.844 2.719-10.27 4.097-15.68 4.097c-4.188 0-8.319-.8154-12.29-2.472l-122.6-51.1l-50.86 76.29C226.3 508.5 219.8 512 212.8 512C201.3 512 192 502.7 192 491.2v-96.18c0-7.115 2.372-14.03 6.742-19.64L416 96l-293.7 264.3L19.69 317.5C8.438 312.8 .8125 302.2 .0625 289.1s5.469-23.72 16.06-29.77l448-255.1c10.69-6.109 23.88-5.547 34 1.406S513.5 24.72 511.6 36.86z"/></svg> [a.maclachlan@ucl.ac.uk](mailto:a.maclachlan@ucl.ac.uk)
 <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#562457;overflow:visible;position:relative;"><path d="M459.4 151.7c.325 4.548 .325 9.097 .325 13.65 0 138.7-105.6 298.6-298.6 298.6-59.45 0-114.7-17.22-161.1-47.11 8.447 .974 16.57 1.299 25.34 1.299 49.06 0 94.21-16.57 130.3-44.83-46.13-.975-84.79-31.19-98.11-72.77 6.498 .974 12.99 1.624 19.82 1.624 9.421 0 18.84-1.3 27.61-3.573-48.08-9.747-84.14-51.98-84.14-102.1v-1.299c13.97 7.797 30.21 12.67 47.43 13.32-28.26-18.84-46.78-51.01-46.78-87.39 0-19.49 5.197-37.36 14.29-52.95 51.65 63.67 129.3 105.3 216.4 109.8-1.624-7.797-2.599-15.92-2.599-24.04 0-57.83 46.78-104.9 104.9-104.9 30.21 0 57.5 12.67 76.67 33.14 23.72-4.548 46.46-13.32 66.6-25.34-7.798 24.37-24.37 44.83-46.13 57.83 21.12-2.273 41.58-8.122 60.43-16.24-14.29 20.79-32.16 39.31-52.63 54.25z"/></svg> [andymaclachlan](https://twitter.com/andymaclachlan)
@@ -645,6 +645,21 @@ positive predictive value
 &lt;img src="img/true_positive.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 .small[Source:[PICO](https://www.pico.net/kb/what-is-a-false-positive-rate/)]
+
+* Although i think this image is **wrong**
+
+**Where model is correct**
+
+* True positive = model predicts positive class correctly
+
+* True negative = model predicts negative class correctly 
+
+** Where model is incorrect**
+
+* False positive = model predicts positive, but it is negative
+
+* False negative = model predicts negtaive, but it is positive
+
 ]
 
 
@@ -661,10 +676,9 @@ positive predictive value
 
 .pull-left[
 
-* **producer’s accuracy** defined as the fraction of correctly classified 
-pixels (TP) compared to ground truth data (TP+FN) `\(\frac{TP}{TP+FN}\)`
+* **producer’s accuracy** defined as the fraction of correctly classified pixels (TP) compared to ground truth data (TP+FN) `\(\frac{TP}{TP+FN}\)`
 
-* **user’s accuracy** defined as the fraction of correctly classified pixels (TP) relative to all others classified as a particular land cover(TP+FP) `\(\frac{TP}{TP+FP}\)`
+* **user’s accuracy** defined as the fraction of correctly classified pixels (TP) relative to all others classified as a particular land cover(TP+FP) `\(\frac{TP}{TP+FP}\)` - **FP** is different
 
 * **overall accuracy** that represents the combined  fraction of correctly classified pixels (TP +TN) across all land cover types (TP+FP+FN+TN) `\(\frac{TP +TN}{TP+FP+FN+TN}\)`
 
@@ -694,13 +708,13 @@ Example
 .pull-left[
 
 * Errors of omission (100-producer's accuracy)
-  * Have been omitted from correct class
+  * Landcover omitted from correct class
   * Type 1 error
   * Urban = 1/23, 4%
   * Urban producer = 22/23, 95.65%
    
 * Errors of commission (100- user's accuracy)
-  * Reference sites left out from classification
+  * Classified sites for incorrect classifications
   * Urban = 9/31, 29%
   * Urban user = 7/31, 22.58%
 
@@ -764,7 +778,7 @@ Overall accuracy is 77.89%
 
 `\(p_o\)` is the proportion of cases correctly classified (accuracy)
 
-`\(p_e\)` expected cases correctly classified by chance (further equations in [Foody 2020](https://reader.elsevier.com/reader/sd/pii/S0034425719306509?token=47B253784FA5346F4A2E26B6DA796DBE71DC53A34AE76AAB1FFA43927EC021937C0C108A42154C4AE774083E4C7BD52F&amp;originRegion=eu-west-1&amp;originCreation=20220707132403))
+`\(p_e\)` expected cases correctly classified by chance (further equations in [Foody 2020](https://reader.elsevier.com/reader/sd/pii/S0034425719306509?token=47B253784FA5346F4A2E26B6DA796DBE71DC53A34AE76AAB1FFA43927EC021937C0C108A42154C4AE774083E4C7BD52F&amp;originRegion=eu-west-1&amp;originCreation=20220707132403)) or [Earth Systems Science and Remote Sensing](https://medium.com/@wenzhao.li1989/accuracy-assessment-d164e492274b)
 
 .small[Source:[Explaining the unsuitability of the kappa coefficient in the assessment and comparison of the accuracy of thematic maps obtained by image classification. Foody 2020](https://reader.elsevier.com/reader/sd/pii/S0034425719306509?token=47B253784FA5346F4A2E26B6DA796DBE71DC53A34AE76AAB1FFA43927EC021937C0C108A42154C4AE774083E4C7BD52F&amp;originRegion=eu-west-1&amp;originCreation=20220707132403)]
 ---
@@ -826,11 +840,11 @@ Problem with recall (Producer accuracy) vs Precision (User accuracy)
 False positives (Producer) or false negatives (User) more important?
 
 
-* model with high recall = true positives but some false positives (predicted urban but land cover that isn't urban)
+* model with high recall (Producer accuracy) = true positives but some false positives (predicted urban but land cover that isn't urban)
 
-* Model with high precision = (actual urban but predicted other landcover)
+* Model with high precision (User’s accuracy) = actual urban but predicted other landcover
 
-* See [MLU-explain](https://mlu-explain.github.io/precision-recall/) for an interactive example
+* See [MLU-explain](https://mlu-explain.github.io/precision-recall/) for an interactive example and next slide...
 ]
 
 .pull-right[
@@ -840,10 +854,65 @@ False positives (Producer) or false negatives (User) more important?
 .small[Source:[PICO](https://www.pico.net/kb/what-is-a-false-positive-rate/)]
 
 
-&lt;img src="img/matrix.PNG" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/matrix.PNG" width="100%" style="display: block; margin: auto;" /&gt;
 
 .small[Source:[Barsi et al. 2018 Accuracy Dimensions in Remote Sensing](https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3/61/2018/isprs-archives-XLII-3-61-2018.pdf)]
 ]
+
+
+---
+# Our data is not balanced....
+
+We can't have both a high high producer accuracy (recall) **and** a high user's accuracy (precision)
+
+.pull-left[
+
+* **user’s accuracy** (precision) ratio of correctly predicted positive classes (TP) to all items predicted to be positive (TP+FP)
+ `\(\frac{TP}{TP+FP}\)` 1/1=100% or 8/19=42%
+ 
+&gt; how precise the model is at positive predictions 
+
+
+]
+
+.pull-right[
+
+
+&lt;img src="img/precision.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+.small[Source:[MLU-explain](https://mlu-explain.github.io/precision-recall/)]
+
+
+
+
+]
+
+---
+
+# Our data is not balanced....2
+
+We can't have both a high high producer accuracy (recall) **and** a high user's accuracy (precision)
+
+.pull-left[
+
+
+* **producer’s accuracy** (recall) the ratio of correctly predicted positive classes (TP) to all items that are actually positive (TP+FN) `\(\frac{TP}{TP+FN}\)` 1/8=13% or 8/8=100%
+
+&gt; how many positive points are correct
+
+
+]
+
+.pull-right[
+
+
+&lt;img src="img/recall.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+.small[Source:[MLU-explain](https://mlu-explain.github.io/precision-recall/)]
+
+
+]
+
 
 ---
 
@@ -854,9 +923,11 @@ False positives (Producer) or false negatives (User) more important?
 The F1-Score (or F Measure) combines both recall (Producer accuracy) and Precision (User accuracy):
 
 
+* `\(F1 = \frac{2 * Precision * Recall}{Precision+Recall}\)`
+
+Which equals....
+
 * `\(F1 = \frac{TP}{TP + \frac{1}{2}*(FP+FN)}\)`
-
-
 
 * Value from 0 to 1, where 1 is better performance
 
@@ -871,6 +942,28 @@ The F1-Score (or F Measure) combines both recall (Producer accuracy) and Precisi
 ]
 
 ---
+# F1 🚗 issues
+
+.pull-left[
+* No True Negatives (TN) in the equation
+  * negative categories that are correctly classified as negative
+
+* Are precision and recall equally important ? 
+  * precision (producer): how many positive points are correct
+  
+  * recall (user): how precise the model is at positive predictions 
+
+* What if our data is very unbalanced ? 
+  * More negatives than positives?
+]
+
+.pull-right[
+
+&lt;img src="img/trade_off.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+.small[Source:[MLU-EXPLAIN](https://mlu-explain.github.io/precision-recall/)]
+]
+---
 # Receiver Operating Characteristic Curve
 
 Receiver Operating Characteristic Curve (the ROC Curve)
@@ -879,21 +972,35 @@ Receiver Operating Characteristic Curve (the ROC Curve)
 
 * Receiver Operating Characteristic Curve (the ROC Curve)
 
-* Originates from WW2, USA wanted to minimize noise from radar to identity (true positives) and not miss aircraft
+* Originates from WW2, USA wanted to minimize noise from radar to identity (true positives) and not miss aircraft...minimizing false positives (clouds)
 
 * **Changing the threshold value of classifier** will change the True Positive rate
 
-* Closer to 1 is what we want, below the random means the classifier is not any better than random. 
+  * probability that a positive sample is correctly predicted in the positive class. E.g., the percentage of radar signals predicted to be airplanes that actually are airplanes.
 
 ]
 
 .pull-right[
 
-&lt;img src="img/ROC.png" width="100%" style="display: block; margin: auto;" /&gt;
+* False positive rate: The probability that a negative sample is incorrectly predicted in the positive class
+
+* Maximise true positives (1) and minimise false positives (0)
+
+&lt;img src="img/ROC_planes.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 .small[Source:[MLU-EXPLAIN](https://mlu-explain.github.io/roc-auc/)]
 
 ]
+
+---
+# Receiver Operating Characteristic Curve
+
+&gt; Goal: Maximise true positives and minimise false positives...
+
+&lt;img src="img/ROC.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+.small[Source:[MLU-EXPLAIN](https://mlu-explain.github.io/roc-auc/)]
+
 
 ---
 # Area Under the ROC Curve
@@ -910,7 +1017,7 @@ Area Under the ROC Curve (AUC, or AUROC)
 
 &gt; "The AUC is the probability that the model will rank a randomly chosen positive example more highly than a randomly chosen negative example."...
 
-e.g. model always give positive from true negative = AUC 0
+e.g. model always give positive from true negative (so always wrong) = AUC 0
 ]
 
 .pull-right[
@@ -1028,10 +1135,9 @@ Karasiak et al. 2022, [Spatial dependence between training and test sets: anothe
 class: inverse, center, middle
 
 
-# Why do the objects perform better than the pixels?
+# Why do the pixels perform better than the objects?
 
 ---
-
 
 # Best approach - cross validation
 
@@ -1045,12 +1151,28 @@ Perhaps as it is meant to be iterative...
 
 ...e.g. the classifier underpredicts urban then you can go and adjust the training data...
 
+We might take the mean accuracy from the cross validation.
+
+Leave one out cross validation is an extreme version where the folds (often 10) equals the number of samples in the data minus 1...next slide...
+
 ]
 
 .pull-right[
 &lt;img src="img/cross.jpg" width="100%" style="display: block; margin: auto;" /&gt;
 .small[Source:[Wikipedia](https://en.wikipedia.org/wiki/Cross-validation_%28statistics%29)
 ]
+]
+---
+# Leave one out cross validation
+
+* An extreme version of cross validation
+
+* Uses all the training data except 1
+
+* Repeats though all of it
+
+&lt;img src="img/leave_one_out_CV.png" width="75%" style="display: block; margin: auto;" /&gt;
+.small[Source:[Rahil Shaikh](https://towardsdatascience.com/cross-validation-explained-evaluating-estimator-performance-e51e5430ff85)
 ]
 ---
 # Best approach - cross validation 2
@@ -1089,11 +1211,15 @@ class: inverse, center, middle
 
 .pull-left[
 
-* spatially partition the folded data
+* spatially partition the folded data, folds are from cross validation
 
-* disjoint using k -means clustering 
+* disjoint (no common boundary) using k -means clustering (number of points and a distance)
 
-* same as cross validaton but with clustering to the folds...
+* same as cross validation but with clustering to the folds...
+
+* stops our training data and testing data being near each other...
+  
+  &gt; in other words this makes sure all the points (or pixels) we train the model with a far away from the points (or pixels) we test the model with
 
 ]
 
@@ -1168,7 +1294,7 @@ Lovelace et al. (2022) use a Support Vector Machine classifier that requires hyp
 
 * **Tuning level** each fold (outer) is then divided into 5 again (inner fold).= Bottom row below
 
-*  **Performance estimation** we fit 50 models with random **C** and **Gamma** use the best values to outer fold = **AUROC**
+*  **Performance estimation**  Use the 50 randomly selected hyperparameters in each of these inner subfolds, i.e., fit 250 models with random **C** and **Gamma** use the best values to outer fold = **AUROC**
 
 
 &lt;img src="img/13_cv.png" width="75%" style="display: block; margin: auto;" /&gt;
@@ -1176,7 +1302,13 @@ Lovelace et al. (2022) use a Support Vector Machine classifier that requires hyp
 ]
 
 ---
+class: inverse, center, middle
 
+## See the figure on the previous sldie..."Using the same data for the performance assessment and the tuning would potentially lead to overoptimistic results"
+
+## Here tuning of parameters is made on a different subset of the data within each fold...
+
+---
 #  Spatial cross validation 6
 
 
@@ -1192,7 +1324,7 @@ It's 5 (outer fold)
 
 It's 100 times repeated (5 fold cross validation)
 
-* 125,000 models for best hyperparameters
+* 125,500 models for best hyperparameters
 
 ]
 
@@ -1211,6 +1343,9 @@ It's 100 times repeated (5 fold cross validation)
 class: inverse, center, middle
 
 # Question: What happens if a classificaiton model doesn't consider spatial autocorrelation ?
+
+--
+## The model will have better accuracy that it actually does
 
 ---
 

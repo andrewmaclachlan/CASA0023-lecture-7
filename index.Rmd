@@ -614,6 +614,21 @@ knitr::include_graphics('img/true_positive.png')
 ```
 
 .small[Source:[PICO](https://www.pico.net/kb/what-is-a-false-positive-rate/)]
+
+* Although i think this image is **wrong**
+
+**Where model is correct**
+
+* True positive = model predicts positive class correctly
+
+* True negative = model predicts negative class correctly 
+
+** Where model is incorrect**
+
+* False positive = model predicts positive, but it is negative
+
+* False negative = model predicts negtaive, but it is positive
+
 ]
 
 
@@ -632,10 +647,9 @@ knitr::include_graphics('img/matrix.PNG')
 
 .pull-left[
 
-* **producer’s accuracy** defined as the fraction of correctly classified 
-pixels (TP) compared to ground truth data (TP+FN) $\frac{TP}{TP+FN}$
+* **producer’s accuracy** defined as the fraction of correctly classified pixels (TP) compared to ground truth data (TP+FN) $\frac{TP}{TP+FN}$
 
-* **user’s accuracy** defined as the fraction of correctly classified pixels (TP) relative to all others classified as a particular land cover(TP+FP) $\frac{TP}{TP+FP}$
+* **user’s accuracy** defined as the fraction of correctly classified pixels (TP) relative to all others classified as a particular land cover(TP+FP) $\frac{TP}{TP+FP}$ - **FP** is different
 
 * **overall accuracy** that represents the combined  fraction of correctly classified pixels (TP +TN) across all land cover types (TP+FP+FN+TN) $\frac{TP +TN}{TP+FP+FN+TN}$
 
@@ -669,13 +683,13 @@ knitr::include_graphics('img/example_matrix.PNG')
 .pull-left[
 
 * Errors of omission (100-producer's accuracy)
-  * Have been omitted from correct class
+  * Landcover omitted from correct class
   * Type 1 error
   * Urban = 1/23, 4%
   * Urban producer = 22/23, 95.65%
    
 * Errors of commission (100- user's accuracy)
-  * Reference sites left out from classification
+  * Classified sites for incorrect classifications
   * Urban = 9/31, 29%
   * Urban user = 7/31, 22.58%
 
@@ -743,7 +757,7 @@ $k=\frac{p_o - p_e}{1- p_e}$
 
 $p_o$ is the proportion of cases correctly classified (accuracy)
 
-$p_e$ expected cases correctly classified by chance (further equations in [Foody 2020](https://reader.elsevier.com/reader/sd/pii/S0034425719306509?token=47B253784FA5346F4A2E26B6DA796DBE71DC53A34AE76AAB1FFA43927EC021937C0C108A42154C4AE774083E4C7BD52F&originRegion=eu-west-1&originCreation=20220707132403))
+$p_e$ expected cases correctly classified by chance (further equations in [Foody 2020](https://reader.elsevier.com/reader/sd/pii/S0034425719306509?token=47B253784FA5346F4A2E26B6DA796DBE71DC53A34AE76AAB1FFA43927EC021937C0C108A42154C4AE774083E4C7BD52F&originRegion=eu-west-1&originCreation=20220707132403)) or [Earth Systems Science and Remote Sensing](https://medium.com/@wenzhao.li1989/accuracy-assessment-d164e492274b)
 
 .small[Source:[Explaining the unsuitability of the kappa coefficient in the assessment and comparison of the accuracy of thematic maps obtained by image classification. Foody 2020](https://reader.elsevier.com/reader/sd/pii/S0034425719306509?token=47B253784FA5346F4A2E26B6DA796DBE71DC53A34AE76AAB1FFA43927EC021937C0C108A42154C4AE774083E4C7BD52F&originRegion=eu-west-1&originCreation=20220707132403)]
 ---
@@ -809,11 +823,11 @@ Problem with recall (Producer accuracy) vs Precision (User accuracy)
 False positives (Producer) or false negatives (User) more important?
 
 
-* model with high recall = true positives but some false positives (predicted urban but land cover that isn't urban)
+* model with high recall (Producer accuracy) = true positives but some false positives (predicted urban but land cover that isn't urban)
 
-* Model with high precision = (actual urban but predicted other landcover)
+* Model with high precision (User’s accuracy) = actual urban but predicted other landcover
 
-* See [MLU-explain](https://mlu-explain.github.io/precision-recall/) for an interactive example
+* See [MLU-explain](https://mlu-explain.github.io/precision-recall/) for an interactive example and next slide...
 ]
 
 .pull-right[
@@ -825,12 +839,71 @@ knitr::include_graphics('img/true_positive.png')
 .small[Source:[PICO](https://www.pico.net/kb/what-is-a-false-positive-rate/)]
 
 
-```{r echo=FALSE, out.width='80%', fig.align='center'}
+```{r echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics('img/matrix.PNG')
 ```
 
 .small[Source:[Barsi et al. 2018 Accuracy Dimensions in Remote Sensing](https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3/61/2018/isprs-archives-XLII-3-61-2018.pdf)]
 ]
+
+
+---
+# Our data is not balanced....
+
+We can't have both a high high producer accuracy (recall) **and** a high user's accuracy (precision)
+
+.pull-left[
+
+* **user’s accuracy** (precision) ratio of correctly predicted positive classes (TP) to all items predicted to be positive (TP+FP)
+ $\frac{TP}{TP+FP}$ 1/1=100% or 8/19=42%
+ 
+> how precise the model is at positive predictions 
+
+
+]
+
+.pull-right[
+
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/precision.png')
+```
+
+.small[Source:[MLU-explain](https://mlu-explain.github.io/precision-recall/)]
+
+
+
+
+]
+
+---
+
+# Our data is not balanced....2
+
+We can't have both a high high producer accuracy (recall) **and** a high user's accuracy (precision)
+
+.pull-left[
+
+
+* **producer’s accuracy** (recall) the ratio of correctly predicted positive classes (TP) to all items that are actually positive (TP+FN) $\frac{TP}{TP+FN}$ 1/8=13% or 8/8=100%
+
+> how many positive points are correct
+
+
+]
+
+.pull-right[
+
+
+```{r echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics('img/recall.png')
+```
+
+.small[Source:[MLU-explain](https://mlu-explain.github.io/precision-recall/)]
+
+
+]
+
 
 ---
 
@@ -841,9 +914,11 @@ knitr::include_graphics('img/matrix.PNG')
 The F1-Score (or F Measure) combines both recall (Producer accuracy) and Precision (User accuracy):
 
 
+* $F1 = \frac{2 * Precision * Recall}{Precision+Recall}$
+
+Which equals....
+
 * $F1 = \frac{TP}{TP + \frac{1}{2}*(FP+FN)}$
-
-
 
 * Value from 0 to 1, where 1 is better performance
 
@@ -860,6 +935,30 @@ knitr::include_graphics('img/matrix.PNG')
 ]
 
 ---
+# F1 `r emo::ji("car")` issues
+
+.pull-left[
+* No True Negatives (TN) in the equation
+  * negative categories that are correctly classified as negative
+
+* Are precision and recall equally important ? 
+  * precision (producer): how many positive points are correct
+  
+  * recall (user): how precise the model is at positive predictions 
+
+* What if our data is very unbalanced ? 
+  * More negatives than positives?
+]
+
+.pull-right[
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/trade_off.png')
+```
+
+.small[Source:[MLU-EXPLAIN](https://mlu-explain.github.io/precision-recall/)]
+]
+---
 # Receiver Operating Characteristic Curve
 
 Receiver Operating Characteristic Curve (the ROC Curve)
@@ -868,15 +967,32 @@ Receiver Operating Characteristic Curve (the ROC Curve)
 
 * Receiver Operating Characteristic Curve (the ROC Curve)
 
-* Originates from WW2, USA wanted to minimize noise from radar to identity (true positives) and not miss aircraft
+* Originates from WW2, USA wanted to minimize noise from radar to identity (true positives) and not miss aircraft...minimizing false positives (clouds)
 
 * **Changing the threshold value of classifier** will change the True Positive rate
 
-* Closer to 1 is what we want, below the random means the classifier is not any better than random. 
+  * probability that a positive sample is correctly predicted in the positive class. E.g., the percentage of radar signals predicted to be airplanes that actually are airplanes.
 
 ]
 
 .pull-right[
+
+* False positive rate: The probability that a negative sample is incorrectly predicted in the positive class
+
+* Maximise true positives (1) and minimise false positives (0)
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/ROC_planes.png')
+```
+
+.small[Source:[MLU-EXPLAIN](https://mlu-explain.github.io/roc-auc/)]
+
+]
+
+---
+# Receiver Operating Characteristic Curve
+
+> Goal: Maximise true positives and minimise false positives...
 
 ```{r echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics('img/ROC.png')
@@ -884,7 +1000,6 @@ knitr::include_graphics('img/ROC.png')
 
 .small[Source:[MLU-EXPLAIN](https://mlu-explain.github.io/roc-auc/)]
 
-]
 
 ---
 # Area Under the ROC Curve
@@ -901,7 +1016,7 @@ Area Under the ROC Curve (AUC, or AUROC)
 
 > "The AUC is the probability that the model will rank a randomly chosen positive example more highly than a randomly chosen negative example."...
 
-e.g. model always give positive from true negative = AUC 0
+e.g. model always give positive from true negative (so always wrong) = AUC 0
 ]
 
 .pull-right[
@@ -1027,10 +1142,9 @@ knitr::include_graphics('img/spatial_dependance.png')
 class: inverse, center, middle
 
 
-# Why do the objects perform better than the pixels?
+# Why do the pixels perform better than the objects?
 
 ---
-
 
 # Best approach - cross validation
 
@@ -1044,6 +1158,10 @@ Perhaps as it is meant to be iterative...
 
 ...e.g. the classifier underpredicts urban then you can go and adjust the training data...
 
+We might take the mean accuracy from the cross validation.
+
+Leave one out cross validation is an extreme version where the folds (often 10) equals the number of samples in the data minus 1...next slide...
+
 ]
 
 .pull-right[
@@ -1052,6 +1170,20 @@ knitr::include_graphics('img/cross.jpg')
 ```
 .small[Source:[Wikipedia](https://en.wikipedia.org/wiki/Cross-validation_%28statistics%29)
 ]
+]
+---
+# Leave one out cross validation
+
+* An extreme version of cross validation
+
+* Uses all the training data except 1
+
+* Repeats though all of it
+
+```{r echo=FALSE, out.width='75%', fig.align='center'}
+knitr::include_graphics('img/leave_one_out_CV.png')
+```
+.small[Source:[Rahil Shaikh](https://towardsdatascience.com/cross-validation-explained-evaluating-estimator-performance-e51e5430ff85)
 ]
 ---
 # Best approach - cross validation 2
@@ -1092,11 +1224,15 @@ class: inverse, center, middle
 
 .pull-left[
 
-* spatially partition the folded data
+* spatially partition the folded data, folds are from cross validation
 
-* disjoint using k -means clustering 
+* disjoint (no common boundary) using k -means clustering (number of points and a distance)
 
-* same as cross validaton but with clustering to the folds...
+* same as cross validation but with clustering to the folds...
+
+* stops our training data and testing data being near each other...
+  
+  > in other words this makes sure all the points (or pixels) we train the model with a far away from the points (or pixels) we test the model with
 
 ]
 
@@ -1181,7 +1317,7 @@ knitr::include_graphics('img/high_gamma.png')
 
 * **Tuning level** each fold (outer) is then divided into 5 again (inner fold).= Bottom row below
 
-*  **Performance estimation** we fit 50 models with random **C** and **Gamma** use the best values to outer fold = **AUROC**
+*  **Performance estimation**  Use the 50 randomly selected hyperparameters in each of these inner subfolds, i.e., fit 250 models with random **C** and **Gamma** use the best values to outer fold = **AUROC**
 
 
 ```{r echo=FALSE, out.width='75%', fig.align='center'}
@@ -1191,7 +1327,13 @@ knitr::include_graphics('img/13_cv.png')
 ]
 
 ---
+class: inverse, center, middle
 
+## See the figure on the previous sldie..."Using the same data for the performance assessment and the tuning would potentially lead to overoptimistic results"
+
+## Here tuning of parameters is made on a different subset of the data within each fold...
+
+---
 #  Spatial cross validation 6
 
 
@@ -1207,7 +1349,7 @@ It's 5 (outer fold)
 
 It's 100 times repeated (5 fold cross validation)
 
-* 125,000 models for best hyperparameters
+* 125,500 models for best hyperparameters
 
 ]
 
@@ -1228,6 +1370,9 @@ knitr::include_graphics('img/boxplot-cv-1.png')
 class: inverse, center, middle
 
 # Question: What happens if a classificaiton model doesn't consider spatial autocorrelation ?
+
+--
+## The model will have better accuracy that it actually does
 
 ---
 
@@ -1259,7 +1404,7 @@ class: inverse, center, middle
 
 ```{r include=FALSE}
 library(xaringanBuilder)
-build_pdf("index.html", complex_slides = TRUE)
+#build_pdf("index.html", complex_slides = TRUE)
 ```
 
 ---
