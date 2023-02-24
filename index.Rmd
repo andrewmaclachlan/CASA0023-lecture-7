@@ -1404,7 +1404,7 @@ class: inverse, center, middle
 
 ```{r include=FALSE}
 library(xaringanBuilder)
-#build_pdf("index.html", complex_slides = TRUE)
+build_pdf("index.html", complex_slides = TRUE)
 ```
 
 ---
