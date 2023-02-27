@@ -740,7 +740,7 @@ knitr::include_graphics('img/accuracy_2.png')
 
 ]
 ---
-# Accuracy assessment 8
+# Accuracy assessment 7
 
 ### To Kappa or not to Kappa?
 
@@ -848,6 +848,13 @@ knitr::include_graphics('img/matrix.PNG')
 
 
 ---
+class: center, middle
+
+## In the next few slides we will change a decision threshold to see the effects on user's and producer's accuracy.
+
+## Focus on the changing decision threshold...
+
+---
 # Our data is not balanced....
 
 We can't have both a high high producer accuracy (recall) **and** a high user's accuracy (precision)
@@ -855,9 +862,17 @@ We can't have both a high high producer accuracy (recall) **and** a high user's 
 .pull-left[
 
 * **user’s accuracy** (precision) ratio of correctly predicted positive classes (TP) to all items predicted to be positive (TP+FP)
- $\frac{TP}{TP+FP}$ 1/1=100% or 8/19=42%
+ $\frac{TP}{TP+FP}$ 
+ 
+1/1=100%  
+
+**or**
+
+8/19=42% (this is on the next slide)
  
 > how precise the model is at positive predictions 
+
+> as a user i only find that only x% of the time when i visit a positive point it is actually positive...
 
 
 ]
@@ -885,10 +900,17 @@ We can't have both a high high producer accuracy (recall) **and** a high user's 
 .pull-left[
 
 
-* **producer’s accuracy** (recall) the ratio of correctly predicted positive classes (TP) to all items that are actually positive (TP+FN) $\frac{TP}{TP+FN}$ 1/8=13% or 8/8=100%
+* **producer’s accuracy** (recall) the ratio of correctly predicted positive classes (TP) to all items that are actually positive (TP+FN) $\frac{TP}{TP+FN}$ 
+
+1/8=13% (from previous slide)
+
+**or**
+
+8/8=100%
 
 > how many positive points are correct
 
+> i am pleased that [as a producer] x% of points are correct compared to the reference
 
 ]
 
@@ -904,6 +926,28 @@ knitr::include_graphics('img/recall.png')
 
 ]
 
+
+---
+# Our data is not balanced....3
+
+**user’s accuracy** (precision)
+
+> I have gone to a site, the model predicted it to be urban, it is not urban...
+
+* How well can the user use the data / classification
+
+**producer’s accuracy** (recall)
+
+> I have gone all the urban sites, they were urban. **BUT** i can see in the distance a site that was predicted to be GRASS but is actually URBAN
+
+* How well did the producer make the data/ classification
+
+
+---
+
+class: inverse, center, middle
+
+## Combine them both...into a F1 score
 
 ---
 
@@ -971,13 +1015,13 @@ Receiver Operating Characteristic Curve (the ROC Curve)
 
 * **Changing the threshold value of classifier** will change the True Positive rate
 
-  * probability that a positive sample is correctly predicted in the positive class. E.g., the percentage of radar signals predicted to be airplanes that actually are airplanes.
+  * probability that a positive sample is correctly predicted in the positive class...planes predicted to be planes
 
 ]
 
 .pull-right[
 
-* False positive rate: The probability that a negative sample is incorrectly predicted in the positive class
+* False positive rate: The probability that a negative sample is incorrectly predicted in the positive class...predicted planes...but are clouds
 
 * Maximise true positives (1) and minimise false positives (0)
 
@@ -990,11 +1034,45 @@ knitr::include_graphics('img/ROC_planes.png')
 ]
 
 ---
+
+# Receiver Operating Characteristic Curve
+
+Receiver Operating Characteristic Curve (the ROC Curve)
+
+.pull-left[
+
+* True positive rate = good =every plane is a plane ?
+* False positive rate = good = every cloud is predicted as noise (not a plane) ?
+
+when threshold is 0
+
+> all planes are planes = TPR = 1
+
+but ...
+
+> all clouds are planes = FPR = 1
+
+]
+
+.pull-right[
+
+
+* Maximise true positives (1) and minimise false positives (0)
+
+```{r echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics('img/ROC_planes.png')
+```
+
+.small[Source:[MLU-EXPLAIN](https://mlu-explain.github.io/roc-auc/)]
+
+]
+---
+
 # Receiver Operating Characteristic Curve
 
 > Goal: Maximise true positives and minimise false positives...
 
-```{r echo=FALSE, out.width='100%', fig.align='center'}
+```{r echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics('img/ROC.png')
 ```
 
@@ -1103,7 +1181,47 @@ knitr::include_graphics('img/train_test_split.png')
 .small[Source:[Michael Galarnyk](https://towardsdatascience.com/understanding-train-test-split-scikit-learn-python-ea676d5e3d1)
 ]
 
+---
 
+# Best approach - cross validation
+
+.pull-left[
+
+Really classification of imagery is a machine learning task...
+
+..So why can't we apply the same methods?
+
+Perhaps as it is meant to be iterative...
+
+...e.g. the classifier underpredicts urban then you can go and adjust the training data...
+
+We might take the mean accuracy from the cross validation.
+
+Leave one out cross validation is an extreme version where the folds (often 10) equals the number of samples in the data minus 1...next slide...
+
+]
+
+.pull-right[
+```{r echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics('img/cross.jpg')
+```
+.small[Source:[Wikipedia](https://en.wikipedia.org/wiki/Cross-validation_%28statistics%29)
+]
+]
+---
+# Leave one out cross validation
+
+* An extreme version of cross validation
+
+* Uses all the training data except 1
+
+* Repeats though all of it
+
+```{r echo=FALSE, out.width='60%', fig.align='center'}
+knitr::include_graphics('img/leave_one_out_CV.png')
+```
+.small[Source:[Rahil Shaikh](https://towardsdatascience.com/cross-validation-explained-evaluating-estimator-performance-e51e5430ff85)
+]
 
 ---
 
@@ -1119,6 +1237,33 @@ class: inverse, center, middle
 --
 
 ## A measure of similarity between nearby data...
+
+---
+
+# Best approach - cross validation 
+
+Waldo Tobler's first Law of Geography...
+
+> "everything is related to everything else, but near things are more related than distant things."
+
+* Are training and testing points too close in geographic space?
+
+* How can we deal with taking a sample of training data for testing when they are possibly from the same polygon of training data...
+
+> ‘Training’ observations near the ‘test’ observations can provide a kind of ‘sneak preview’: information that should be unavailable to the training dataset. 
+
+.small[Source:[Lovelace et al. 2022](https://geocompr.robinlovelace.net/spatial-cv.html#intro-cv)]
+
+---
+
+
+```{r echo=FALSE, out.width='60%', fig.align='center'}
+knitr::include_graphics('img/more_related.jpg')
+```
+.small[Source:[Spatial is Special](https://www.e-education.psu.edu/maps/l2_p2.html)]
+
+
+
 
 ---
 
@@ -1144,71 +1289,6 @@ class: inverse, center, middle
 
 # Why do the pixels perform better than the objects?
 
----
-
-# Best approach - cross validation
-
-.pull-left[
-
-Really classification of imagery is a machine learning task...
-
-..So why can't we apply the same methods?
-
-Perhaps as it is meant to be iterative...
-
-...e.g. the classifier underpredicts urban then you can go and adjust the training data...
-
-We might take the mean accuracy from the cross validation.
-
-Leave one out cross validation is an extreme version where the folds (often 10) equals the number of samples in the data minus 1...next slide...
-
-]
-
-.pull-right[
-```{r echo=FALSE, out.width='100%', fig.align='center'}
-knitr::include_graphics('img/cross.jpg')
-```
-.small[Source:[Wikipedia](https://en.wikipedia.org/wiki/Cross-validation_%28statistics%29)
-]
-]
----
-# Leave one out cross validation
-
-* An extreme version of cross validation
-
-* Uses all the training data except 1
-
-* Repeats though all of it
-
-```{r echo=FALSE, out.width='75%', fig.align='center'}
-knitr::include_graphics('img/leave_one_out_CV.png')
-```
-.small[Source:[Rahil Shaikh](https://towardsdatascience.com/cross-validation-explained-evaluating-estimator-performance-e51e5430ff85)
-]
----
-# Best approach - cross validation 2
-
-Waldo Tobler's first Law of Geography...
-
-> "everything is related to everything else, but near things are more related than distant things."
-
-* Are training and testing points too close in geographic space?
-
-* How can we deal with taking a sample of training data for testing when they are possibly from the same polygon of training data...
-
-> ‘Training’ observations near the ‘test’ observations can provide a kind of ‘sneak preview’: information that should be unavailable to the training dataset. 
-
-.small[Source:[Lovelace et al. 2022](https://geocompr.robinlovelace.net/spatial-cv.html#intro-cv)]
-
----
-
-
-
-```{r echo=FALSE, out.width='60%', fig.align='center'}
-knitr::include_graphics('img/more_related.jpg')
-```
-.small[Source:[Spatial is Special](https://www.e-education.psu.edu/maps/l2_p2.html)]
-
 
 ---
 
@@ -1220,7 +1300,7 @@ class: inverse, center, middle
 
 ---
 
-#  Spatial cross validation 2
+#  Spatial cross validation 
 
 .pull-left[
 
@@ -1313,14 +1393,14 @@ knitr::include_graphics('img/high_gamma.png')
 
 #  Spatial cross validation 5
 
-* **Performance level** each spatial fold (taken from our first k-means cross validation fold division). = Top row below
+* **Performance level** each spatial fold (taken from our first k-means cross validation fold division). = Top row below, a typical cross validation fold...
 
 * **Tuning level** each fold (outer) is then divided into 5 again (inner fold).= Bottom row below
 
-*  **Performance estimation**  Use the 50 randomly selected hyperparameters in each of these inner subfolds, i.e., fit 250 models with random **C** and **Gamma** use the best values to outer fold = **AUROC**
+*  **Performance estimation**  Use the 50 randomly selected hyperparameters in each of these inner subfolds, i.e., fit 250 models with random **C** and **Gamma** use the best values to outer fold, based on **AUROC** with testing data
 
 
-```{r echo=FALSE, out.width='75%', fig.align='center'}
+```{r echo=FALSE, out.width='65%', fig.align='center'}
 knitr::include_graphics('img/13_cv.png')
 ```
 .small[Schematic of hyperparameter tuning and performance estimation levels in CV. (Figure was taken from Schratz et al. (2019).. Source:[Lovelace et al. 2022](https://geocompr.robinlovelace.net/spatial-cv.html)
@@ -1329,7 +1409,9 @@ knitr::include_graphics('img/13_cv.png')
 ---
 class: inverse, center, middle
 
-## See the figure on the previous sldie..."Using the same data for the performance assessment and the tuning would potentially lead to overoptimistic results"
+## See the figure on the previous slide..."Using the same data for the performance assessment and the tuning would potentially lead to overoptimistic results"
+
+##...this means tuning on a "normal cross validation fold" is not representative...
 
 ## Here tuning of parameters is made on a different subset of the data within each fold...
 
@@ -1341,9 +1423,9 @@ class: inverse, center, middle
 
 **Here we have..**.
 
-* 1 outer fold has 5 inner folds with 50 models = 250 models for **C** and **Gamma**
+* 1 outer fold has 5 inner folds with 50 randomly selected hyper parameters = 250 models for **C** and **Gamma**
 
-It's 5 (outer fold)
+It's 5 over folds
 
 * Each repetition =  1,250 (250 * 5) 
 
@@ -1418,8 +1500,6 @@ https://doodles.mountainmath.ca/blog/2019/10/07/spatial-autocorrelation-co/
 https://geocompr.robinlovelace.net/spatial-cv.html
 
 https://link.springer.com/article/10.1007/s10994-021-05972-1
-
-https://geocompr.robinlovelace.net/spatial-cv.html
 
 https://machinelearningmastery.com/loocv-for-evaluating-machine-learning-algorithms/#:~:text=fold%20Cross%2DValidation-,Leave%2Done%2Dout%20cross%2Dvalidation%2C%20or%20LOOCV%2C,has%20the%20maximum%20computational%20cost.
 

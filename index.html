@@ -32,7 +32,7 @@
     <script src="libs/tile-view/tile-view.js"></script>
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
-    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x2049328cbe74d9fa26c85f96f047d8d","expires":1}</script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"xec4a15a7d424fe79707a796b3091f9c","expires":1}</script>
     <script src="libs/himalaya/himalaya.js"></script>
     <link href="libs/editable/editable.css" rel="stylesheet" />
     <script src="libs/editable/editable.js"></script>
@@ -74,7 +74,7 @@ background-position: center
 
 ### Lecture 7: Classification The Big Questions (Lecture 6 continued) and Accuracy
 
-### 28/06/2022 (updated: 24/02/2023)
+### 28/06/2022 (updated: 27/02/2023)
 
 <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#562457;overflow:visible;position:relative;"><path d="M511.6 36.86l-64 415.1c-1.5 9.734-7.375 18.22-15.97 23.05c-4.844 2.719-10.27 4.097-15.68 4.097c-4.188 0-8.319-.8154-12.29-2.472l-122.6-51.1l-50.86 76.29C226.3 508.5 219.8 512 212.8 512C201.3 512 192 502.7 192 491.2v-96.18c0-7.115 2.372-14.03 6.742-19.64L416 96l-293.7 264.3L19.69 317.5C8.438 312.8 .8125 302.2 .0625 289.1s5.469-23.72 16.06-29.77l448-255.1c10.69-6.109 23.88-5.547 34 1.406S513.5 24.72 511.6 36.86z"/></svg> [a.maclachlan@ucl.ac.uk](mailto:a.maclachlan@ucl.ac.uk)
 <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#562457;overflow:visible;position:relative;"><path d="M459.4 151.7c.325 4.548 .325 9.097 .325 13.65 0 138.7-105.6 298.6-298.6 298.6-59.45 0-114.7-17.22-161.1-47.11 8.447 .974 16.57 1.299 25.34 1.299 49.06 0 94.21-16.57 130.3-44.83-46.13-.975-84.79-31.19-98.11-72.77 6.498 .974 12.99 1.624 19.82 1.624 9.421 0 18.84-1.3 27.61-3.573-48.08-9.747-84.14-51.98-84.14-102.1v-1.299c13.97 7.797 30.21 12.67 47.43 13.32-28.26-18.84-46.78-51.01-46.78-87.39 0-19.49 5.197-37.36 14.29-52.95 51.65 63.67 129.3 105.3 216.4 109.8-1.624-7.797-2.599-15.92-2.599-24.04 0-57.83 46.78-104.9 104.9-104.9 30.21 0 57.5 12.67 76.67 33.14 23.72-4.548 46.46-13.32 66.6-25.34-7.798 24.37-24.37 44.83-46.13 57.83 21.12-2.273 41.58-8.122 60.43-16.24-14.29 20.79-32.16 39.31-52.63 54.25z"/></svg> [andymaclachlan](https://twitter.com/andymaclachlan)
@@ -513,6 +513,15 @@ See, Jensen page 480 - following example taken from there
 
 Not as complicated as it looks...here are some end members for bands 3 and 4
 
+
+```
+## Warning: package 'ggplot2' was built under R version 4.2.2
+```
+
+```
+## Warning: package 'stringr' was built under R version 4.2.2
+```
+
 &lt;table&gt;
  &lt;thead&gt;
   &lt;tr&gt;
@@ -761,7 +770,7 @@ Overall accuracy is 77.89%
 
 ]
 ---
-# Accuracy assessment 8
+# Accuracy assessment 7
 
 ### To Kappa or not to Kappa?
 
@@ -861,6 +870,13 @@ False positives (Producer) or false negatives (User) more important?
 
 
 ---
+class: center, middle
+
+## In the next few slides we will change a decision threshold to see the effects on user's and producer's accuracy.
+
+## Focus on the changing decision threshold...
+
+---
 # Our data is not balanced....
 
 We can't have both a high high producer accuracy (recall) **and** a high user's accuracy (precision)
@@ -868,9 +884,17 @@ We can't have both a high high producer accuracy (recall) **and** a high user's 
 .pull-left[
 
 * **user’s accuracy** (precision) ratio of correctly predicted positive classes (TP) to all items predicted to be positive (TP+FP)
- `\(\frac{TP}{TP+FP}\)` 1/1=100% or 8/19=42%
+ `\(\frac{TP}{TP+FP}\)` 
+ 
+1/1=100%  
+
+**or**
+
+8/19=42% (this is on the next slide)
  
 &gt; how precise the model is at positive predictions 
+
+&gt; as a user i only find that only x% of the time when i visit a positive point it is actually positive...
 
 
 ]
@@ -896,10 +920,17 @@ We can't have both a high high producer accuracy (recall) **and** a high user's 
 .pull-left[
 
 
-* **producer’s accuracy** (recall) the ratio of correctly predicted positive classes (TP) to all items that are actually positive (TP+FN) `\(\frac{TP}{TP+FN}\)` 1/8=13% or 8/8=100%
+* **producer’s accuracy** (recall) the ratio of correctly predicted positive classes (TP) to all items that are actually positive (TP+FN) `\(\frac{TP}{TP+FN}\)` 
+
+1/8=13% (from previous slide)
+
+**or**
+
+8/8=100%
 
 &gt; how many positive points are correct
 
+&gt; i am pleased that [as a producer] x% of points are correct compared to the reference
 
 ]
 
@@ -913,6 +944,28 @@ We can't have both a high high producer accuracy (recall) **and** a high user's 
 
 ]
 
+
+---
+# Our data is not balanced....3
+
+**user’s accuracy** (precision)
+
+&gt; I have gone to a site, the model predicted it to be urban, it is not urban...
+
+* How well can the user use the data / classification
+
+**producer’s accuracy** (recall)
+
+&gt; I have gone all the urban sites, they were urban. **BUT** i can see in the distance a site that was predicted to be GRASS but is actually URBAN
+
+* How well did the producer make the data/ classification
+
+
+---
+
+class: inverse, center, middle
+
+## Combine them both...into a F1 score
 
 ---
 
@@ -976,13 +1029,13 @@ Receiver Operating Characteristic Curve (the ROC Curve)
 
 * **Changing the threshold value of classifier** will change the True Positive rate
 
-  * probability that a positive sample is correctly predicted in the positive class. E.g., the percentage of radar signals predicted to be airplanes that actually are airplanes.
+  * probability that a positive sample is correctly predicted in the positive class...planes predicted to be planes
 
 ]
 
 .pull-right[
 
-* False positive rate: The probability that a negative sample is incorrectly predicted in the positive class
+* False positive rate: The probability that a negative sample is incorrectly predicted in the positive class...predicted planes...but are clouds
 
 * Maximise true positives (1) and minimise false positives (0)
 
@@ -993,11 +1046,43 @@ Receiver Operating Characteristic Curve (the ROC Curve)
 ]
 
 ---
+
+# Receiver Operating Characteristic Curve
+
+Receiver Operating Characteristic Curve (the ROC Curve)
+
+.pull-left[
+
+* True positive rate = good =every plane is a plane ?
+* False positive rate = good = every cloud is predicted as noise (not a plane) ?
+
+when threshold is 0
+
+&gt; all planes are planes = TPR = 1
+
+but ...
+
+&gt; all clouds are planes = FPR = 1
+
+]
+
+.pull-right[
+
+
+* Maximise true positives (1) and minimise false positives (0)
+
+&lt;img src="img/ROC_planes.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+.small[Source:[MLU-EXPLAIN](https://mlu-explain.github.io/roc-auc/)]
+
+]
+---
+
 # Receiver Operating Characteristic Curve
 
 &gt; Goal: Maximise true positives and minimise false positives...
 
-&lt;img src="img/ROC.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/ROC.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 .small[Source:[MLU-EXPLAIN](https://mlu-explain.github.io/roc-auc/)]
 
@@ -1098,7 +1183,43 @@ class: inverse, center, middle
 .small[Source:[Michael Galarnyk](https://towardsdatascience.com/understanding-train-test-split-scikit-learn-python-ea676d5e3d1)
 ]
 
+---
 
+# Best approach - cross validation
+
+.pull-left[
+
+Really classification of imagery is a machine learning task...
+
+..So why can't we apply the same methods?
+
+Perhaps as it is meant to be iterative...
+
+...e.g. the classifier underpredicts urban then you can go and adjust the training data...
+
+We might take the mean accuracy from the cross validation.
+
+Leave one out cross validation is an extreme version where the folds (often 10) equals the number of samples in the data minus 1...next slide...
+
+]
+
+.pull-right[
+&lt;img src="img/cross.jpg" width="80%" style="display: block; margin: auto;" /&gt;
+.small[Source:[Wikipedia](https://en.wikipedia.org/wiki/Cross-validation_%28statistics%29)
+]
+]
+---
+# Leave one out cross validation
+
+* An extreme version of cross validation
+
+* Uses all the training data except 1
+
+* Repeats though all of it
+
+&lt;img src="img/leave_one_out_CV.png" width="60%" style="display: block; margin: auto;" /&gt;
+.small[Source:[Rahil Shaikh](https://towardsdatascience.com/cross-validation-explained-evaluating-estimator-performance-e51e5430ff85)
+]
 
 ---
 
@@ -1114,6 +1235,31 @@ class: inverse, center, middle
 --
 
 ## A measure of similarity between nearby data...
+
+---
+
+# Best approach - cross validation 
+
+Waldo Tobler's first Law of Geography...
+
+&gt; "everything is related to everything else, but near things are more related than distant things."
+
+* Are training and testing points too close in geographic space?
+
+* How can we deal with taking a sample of training data for testing when they are possibly from the same polygon of training data...
+
+&gt; ‘Training’ observations near the ‘test’ observations can provide a kind of ‘sneak preview’: information that should be unavailable to the training dataset. 
+
+.small[Source:[Lovelace et al. 2022](https://geocompr.robinlovelace.net/spatial-cv.html#intro-cv)]
+
+---
+
+
+&lt;img src="img/more_related.jpg" width="60%" style="display: block; margin: auto;" /&gt;
+.small[Source:[Spatial is Special](https://www.e-education.psu.edu/maps/l2_p2.html)]
+
+
+
 
 ---
 
@@ -1137,65 +1283,6 @@ class: inverse, center, middle
 
 # Why do the pixels perform better than the objects?
 
----
-
-# Best approach - cross validation
-
-.pull-left[
-
-Really classification of imagery is a machine learning task...
-
-..So why can't we apply the same methods?
-
-Perhaps as it is meant to be iterative...
-
-...e.g. the classifier underpredicts urban then you can go and adjust the training data...
-
-We might take the mean accuracy from the cross validation.
-
-Leave one out cross validation is an extreme version where the folds (often 10) equals the number of samples in the data minus 1...next slide...
-
-]
-
-.pull-right[
-&lt;img src="img/cross.jpg" width="100%" style="display: block; margin: auto;" /&gt;
-.small[Source:[Wikipedia](https://en.wikipedia.org/wiki/Cross-validation_%28statistics%29)
-]
-]
----
-# Leave one out cross validation
-
-* An extreme version of cross validation
-
-* Uses all the training data except 1
-
-* Repeats though all of it
-
-&lt;img src="img/leave_one_out_CV.png" width="75%" style="display: block; margin: auto;" /&gt;
-.small[Source:[Rahil Shaikh](https://towardsdatascience.com/cross-validation-explained-evaluating-estimator-performance-e51e5430ff85)
-]
----
-# Best approach - cross validation 2
-
-Waldo Tobler's first Law of Geography...
-
-&gt; "everything is related to everything else, but near things are more related than distant things."
-
-* Are training and testing points too close in geographic space?
-
-* How can we deal with taking a sample of training data for testing when they are possibly from the same polygon of training data...
-
-&gt; ‘Training’ observations near the ‘test’ observations can provide a kind of ‘sneak preview’: information that should be unavailable to the training dataset. 
-
-.small[Source:[Lovelace et al. 2022](https://geocompr.robinlovelace.net/spatial-cv.html#intro-cv)]
-
----
-
-
-
-&lt;img src="img/more_related.jpg" width="60%" style="display: block; margin: auto;" /&gt;
-.small[Source:[Spatial is Special](https://www.e-education.psu.edu/maps/l2_p2.html)]
-
 
 ---
 
@@ -1207,7 +1294,7 @@ class: inverse, center, middle
 
 ---
 
-#  Spatial cross validation 2
+#  Spatial cross validation 
 
 .pull-left[
 
@@ -1290,21 +1377,23 @@ Lovelace et al. (2022) use a Support Vector Machine classifier that requires hyp
 
 #  Spatial cross validation 5
 
-* **Performance level** each spatial fold (taken from our first k-means cross validation fold division). = Top row below
+* **Performance level** each spatial fold (taken from our first k-means cross validation fold division). = Top row below, a typical cross validation fold...
 
 * **Tuning level** each fold (outer) is then divided into 5 again (inner fold).= Bottom row below
 
-*  **Performance estimation**  Use the 50 randomly selected hyperparameters in each of these inner subfolds, i.e., fit 250 models with random **C** and **Gamma** use the best values to outer fold = **AUROC**
+*  **Performance estimation**  Use the 50 randomly selected hyperparameters in each of these inner subfolds, i.e., fit 250 models with random **C** and **Gamma** use the best values to outer fold, based on **AUROC** with testing data
 
 
-&lt;img src="img/13_cv.png" width="75%" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/13_cv.png" width="65%" style="display: block; margin: auto;" /&gt;
 .small[Schematic of hyperparameter tuning and performance estimation levels in CV. (Figure was taken from Schratz et al. (2019).. Source:[Lovelace et al. 2022](https://geocompr.robinlovelace.net/spatial-cv.html)
 ]
 
 ---
 class: inverse, center, middle
 
-## See the figure on the previous sldie..."Using the same data for the performance assessment and the tuning would potentially lead to overoptimistic results"
+## See the figure on the previous slide..."Using the same data for the performance assessment and the tuning would potentially lead to overoptimistic results"
+
+##...this means tuning on a "normal cross validation fold" is not representative...
 
 ## Here tuning of parameters is made on a different subset of the data within each fold...
 
@@ -1316,9 +1405,9 @@ class: inverse, center, middle
 
 **Here we have..**.
 
-* 1 outer fold has 5 inner folds with 50 models = 250 models for **C** and **Gamma**
+* 1 outer fold has 5 inner folds with 50 randomly selected hyper parameters = 250 models for **C** and **Gamma**
 
-It's 5 (outer fold)
+It's 5 over folds
 
 * Each repetition =  1,250 (250 * 5) 
 
@@ -1388,8 +1477,6 @@ https://doodles.mountainmath.ca/blog/2019/10/07/spatial-autocorrelation-co/
 https://geocompr.robinlovelace.net/spatial-cv.html
 
 https://link.springer.com/article/10.1007/s10994-021-05972-1
-
-https://geocompr.robinlovelace.net/spatial-cv.html
 
 https://machinelearningmastery.com/loocv-for-evaluating-machine-learning-algorithms/#:~:text=fold%20Cross%2DValidation-,Leave%2Done%2Dout%20cross%2Dvalidation%2C%20or%20LOOCV%2C,has%20the%20maximum%20computational%20cost.
 
