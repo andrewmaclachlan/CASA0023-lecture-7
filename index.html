@@ -32,7 +32,7 @@
     <script src="libs/tile-view/tile-view.js"></script>
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
-    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"xec4a15a7d424fe79707a796b3091f9c","expires":1}</script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"xdb52a004d0f46598cd845fe2b2827fc","expires":1}</script>
     <script src="libs/himalaya/himalaya.js"></script>
     <link href="libs/editable/editable.css" rel="stylesheet" />
     <script src="libs/editable/editable.js"></script>
@@ -74,7 +74,7 @@ background-position: center
 
 ### Lecture 7: Classification The Big Questions (Lecture 6 continued) and Accuracy
 
-### 28/06/2022 (updated: 27/02/2023)
+### 28/06/2022 (updated: 28/02/2023)
 
 <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#562457;overflow:visible;position:relative;"><path d="M511.6 36.86l-64 415.1c-1.5 9.734-7.375 18.22-15.97 23.05c-4.844 2.719-10.27 4.097-15.68 4.097c-4.188 0-8.319-.8154-12.29-2.472l-122.6-51.1l-50.86 76.29C226.3 508.5 219.8 512 212.8 512C201.3 512 192 502.7 192 491.2v-96.18c0-7.115 2.372-14.03 6.742-19.64L416 96l-293.7 264.3L19.69 317.5C8.438 312.8 .8125 302.2 .0625 289.1s5.469-23.72 16.06-29.77l448-255.1c10.69-6.109 23.88-5.547 34 1.406S513.5 24.72 511.6 36.86z"/></svg> [a.maclachlan@ucl.ac.uk](mailto:a.maclachlan@ucl.ac.uk)
 <svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#562457;overflow:visible;position:relative;"><path d="M459.4 151.7c.325 4.548 .325 9.097 .325 13.65 0 138.7-105.6 298.6-298.6 298.6-59.45 0-114.7-17.22-161.1-47.11 8.447 .974 16.57 1.299 25.34 1.299 49.06 0 94.21-16.57 130.3-44.83-46.13-.975-84.79-31.19-98.11-72.77 6.498 .974 12.99 1.624 19.82 1.624 9.421 0 18.84-1.3 27.61-3.573-48.08-9.747-84.14-51.98-84.14-102.1v-1.299c13.97 7.797 30.21 12.67 47.43 13.32-28.26-18.84-46.78-51.01-46.78-87.39 0-19.49 5.197-37.36 14.29-52.95 51.65 63.67 129.3 105.3 216.4 109.8-1.624-7.797-2.599-15.92-2.599-24.04 0-57.83 46.78-104.9 104.9-104.9 30.21 0 57.5 12.67 76.67 33.14 23.72-4.548 46.46-13.32 66.6-25.34-7.798 24.37-24.37 44.83-46.13 57.83 21.12-2.273 41.58-8.122 60.43-16.24-14.29 20.79-32.16 39.31-52.63 54.25z"/></svg> [andymaclachlan](https://twitter.com/andymaclachlan)
@@ -284,8 +284,7 @@ Further reading: [A Comprehensive Guide to Convolutional Neural Networks — the
 
 .panel[.panel-name[CNN 2]
 
-
-&lt;img src="img/conv.gif" width="100%" /&gt;
+&lt;img src="img/conv.gif" width=".1%" /&gt;
 .small[Source:[Original from the British Library. Digitally enhanced by rawpixel.](https://www.rawpixel.com/image/571789/solar-generator-vintage-style)]
 
 ]
@@ -513,15 +512,6 @@ See, Jensen page 480 - following example taken from there
 
 Not as complicated as it looks...here are some end members for bands 3 and 4
 
-
-```
-## Warning: package 'ggplot2' was built under R version 4.2.2
-```
-
-```
-## Warning: package 'stringr' was built under R version 4.2.2
-```
-
 &lt;table&gt;
  &lt;thead&gt;
   &lt;tr&gt;
@@ -649,34 +639,28 @@ positive predictive value
 ---
 # Accuracy assessment 2
 
+&lt;img src="img/matrix.PNG" width="45%" style="display: block; margin: auto;" /&gt;
+
+.small[Source:[Barsi et al. 2018 Accuracy Dimensions in Remote Sensing](https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3/61/2018/isprs-archives-XLII-3-61-2018.pdf)]
+
 .pull-left[
-
-&lt;img src="img/true_positive.png" width="100%" style="display: block; margin: auto;" /&gt;
-
-.small[Source:[PICO](https://www.pico.net/kb/what-is-a-false-positive-rate/)]
-
-* Although i think this image is **wrong**
-
 **Where model is correct**
 
 * True positive = model predicts positive class correctly
 
 * True negative = model predicts negative class correctly 
+]
 
-** Where model is incorrect**
+.pull-right[
+**Where model is incorrect**
 
 * False positive = model predicts positive, but it is negative
 
-* False negative = model predicts negtaive, but it is positive
+* False negative = model predicts negative, but it is positive
 
 ]
 
 
-.pull-right[
-&lt;img src="img/matrix.PNG" width="100%" style="display: block; margin: auto;" /&gt;
-
-.small[Source:[Barsi et al. 2018 Accuracy Dimensions in Remote Sensing](https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3/61/2018/isprs-archives-XLII-3-61-2018.pdf)]
-]
 
 ---
 
@@ -709,7 +693,7 @@ Example
 &lt;img src="img/example_matrix.PNG" width="100%" style="display: block; margin: auto;" /&gt;
 
 .small[Source:[Brown et al. 2022 Dynamic World, Near real-time global 10m land use land cover mapping](https://www.nature.com/articles/s41597-022-01307-4.pdf)]
-]
+
 ---
 
 # Accuracy assessment 5
@@ -857,10 +841,6 @@ False positives (Producer) or false negatives (User) more important?
 ]
 
 .pull-right[
-
-&lt;img src="img/true_positive.png" width="80%" style="display: block; margin: auto;" /&gt;
-
-.small[Source:[PICO](https://www.pico.net/kb/what-is-a-false-positive-rate/)]
 
 
 &lt;img src="img/matrix.PNG" width="100%" style="display: block; margin: auto;" /&gt;
@@ -1046,6 +1026,30 @@ Receiver Operating Characteristic Curve (the ROC Curve)
 ]
 
 ---
+# Receiver Operating Characteristic Curve
+
+.pull-left[
+
+**vertical columns here** - uses whole matrix
+
+* First is True positive
+
+  * True positive rate = TP/TP+FN
+
+* Second is False positive rate
+
+  * False positive rate = FP/FP+TN
+]
+
+.pull-right[
+
+&lt;img src="img/matrix.PNG" width="80%" style="display: block; margin: auto;" /&gt;
+
+.small[Source:[Barsi et al. 2018 Accuracy Dimensions in Remote Sensing](https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3/61/2018/isprs-archives-XLII-3-61-2018.pdf)]
+
+]
+
+---
 
 # Receiver Operating Characteristic Curve
 
@@ -1116,7 +1120,9 @@ e.g. model always give positive from true negative (so always wrong) = AUC 0
 ---
 class: inverse, center, middle
 
-# How to we get test data for the accuracy assessment?
+# Next time (?)
+
+# How do we get test data for the accuracy assessment?
 
 ---
 
@@ -1318,13 +1324,29 @@ class: inverse, center, middle
 
 ---
 
-#  Spatial cross validation 3
+class: inverse, center, middle
+
+## How does this compare to ideas we saw in CASA0005 (e.g. lag, error, GWR)
+
+## Did we test our models there
+
+## How did we deal with nearby points being related ?
+
+## Did we need to generalise for new data or not ?
+
+--
+
+### If not then we don't need to test the model
+
+---
+
+#  Spatial cross validation 2
 
 Lovelace et al. (2022) use a Support Vector Machine classifier that requires hyperparameters (set before the classification)
 
 Standard SVM then the classifier will try to **overfit** = perfect for the current data but useless for anything else...
 
-Cortes and Vapnik - **soft margin**, permit classifications = controlled with **C**
+Cortes and Vapnik - **soft margin**, permit misclassifications = controlled with **C**
 
 .pull-left[
 
@@ -1340,14 +1362,14 @@ Cortes and Vapnik - **soft margin**, permit classifications = controlled with **
 ]
 
 ]
-* **C** = adds penalty (proportional to distance from decision line) for each classified point. Small = image on right, large = image on left
+* **C** = adds penalty (proportional to distance from decision line) for each classified point. Small = image on right, large = image on left. **changes the slope**
 
 .small[Source:[Soner Yildirim](https://towardsdatascience.com/hyperparameter-tuning-for-support-vector-machines-c-and-gamma-parameters-6a5097416167)
 ]
 
 ---
 
-#  Spatial cross validation 4
+#  Spatial cross validation 3
 
 Lovelace et al. (2022) use a Support Vector Machine classifier that requires hyperparameters (set before the classification)
 
@@ -1375,7 +1397,7 @@ Lovelace et al. (2022) use a Support Vector Machine classifier that requires hyp
 ]
 ---
 
-#  Spatial cross validation 5
+#  Spatial cross validation 4
 
 * **Performance level** each spatial fold (taken from our first k-means cross validation fold division). = Top row below, a typical cross validation fold...
 

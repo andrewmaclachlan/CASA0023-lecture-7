@@ -239,8 +239,7 @@ Further reading: [A Comprehensive Guide to Convolutional Neural Networks — the
 
 .panel[.panel-name[CNN 2]
 
-
-```{r echo=FALSE, out.width='100%'}
+```{r echo=FALSE, out.width='.1%'}
 knitr::include_graphics('img/conv.gif')
 ```
 .small[Source:[Original from the British Library. Digitally enhanced by rawpixel.](https://www.rawpixel.com/image/571789/solar-generator-vintage-style)]
@@ -488,7 +487,7 @@ See, Jensen page 480 - following example taken from there
 
 Not as complicated as it looks...here are some end members for bands 3 and 4
 
-```{r echo=FALSE, out.width='100%', fig.align='center', message=FALSE}
+```{r echo=FALSE, out.width='100%', fig.align='center', message=FALSE, warning=FALSE}
 library(ggplot2)
 library(tidyverse)
 Band <- c(3,4)
@@ -607,38 +606,30 @@ knitr::include_graphics('img/matrix.PNG')
 ---
 # Accuracy assessment 2
 
-.pull-left[
-
-```{r echo=FALSE, out.width='100%', fig.align='center'}
-knitr::include_graphics('img/true_positive.png')
+```{r echo=FALSE, out.width='45%', fig.align='center'}
+knitr::include_graphics('img/matrix.PNG')
 ```
 
-.small[Source:[PICO](https://www.pico.net/kb/what-is-a-false-positive-rate/)]
+.small[Source:[Barsi et al. 2018 Accuracy Dimensions in Remote Sensing](https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3/61/2018/isprs-archives-XLII-3-61-2018.pdf)]
 
-* Although i think this image is **wrong**
-
+.pull-left[
 **Where model is correct**
 
 * True positive = model predicts positive class correctly
 
 * True negative = model predicts negative class correctly 
+]
 
-** Where model is incorrect**
+.pull-right[
+**Where model is incorrect**
 
 * False positive = model predicts positive, but it is negative
 
-* False negative = model predicts negtaive, but it is positive
+* False negative = model predicts negative, but it is positive
 
 ]
 
 
-.pull-right[
-```{r echo=FALSE, out.width='100%', fig.align='center'}
-knitr::include_graphics('img/matrix.PNG')
-```
-
-.small[Source:[Barsi et al. 2018 Accuracy Dimensions in Remote Sensing](https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3/61/2018/isprs-archives-XLII-3-61-2018.pdf)]
-]
 
 ---
 
@@ -675,7 +666,7 @@ knitr::include_graphics('img/example_matrix.PNG')
 ```
 
 .small[Source:[Brown et al. 2022 Dynamic World, Near real-time global 10m land use land cover mapping](https://www.nature.com/articles/s41597-022-01307-4.pdf)]
-]
+
 ---
 
 # Accuracy assessment 5
@@ -831,12 +822,6 @@ False positives (Producer) or false negatives (User) more important?
 ]
 
 .pull-right[
-
-```{r echo=FALSE, out.width='80%', fig.align='center'}
-knitr::include_graphics('img/true_positive.png')
-```
-
-.small[Source:[PICO](https://www.pico.net/kb/what-is-a-false-positive-rate/)]
 
 
 ```{r echo=FALSE, out.width='100%', fig.align='center'}
@@ -1034,6 +1019,32 @@ knitr::include_graphics('img/ROC_planes.png')
 ]
 
 ---
+# Receiver Operating Characteristic Curve
+
+.pull-left[
+
+**vertical columns here** - uses whole matrix
+
+* First is True positive
+
+  * True positive rate = TP/TP+FN
+
+* Second is False positive rate
+
+  * False positive rate = FP/FP+TN
+]
+
+.pull-right[
+
+```{r echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics('img/matrix.PNG')
+```
+
+.small[Source:[Barsi et al. 2018 Accuracy Dimensions in Remote Sensing](https://www.int-arch-photogramm-remote-sens-spatial-inf-sci.net/XLII-3/61/2018/isprs-archives-XLII-3-61-2018.pdf)]
+
+]
+
+---
 
 # Receiver Operating Characteristic Curve
 
@@ -1110,7 +1121,9 @@ knitr::include_graphics('img/AUC.png')
 ---
 class: inverse, center, middle
 
-# How to we get test data for the accuracy assessment?
+# Next time (?)
+
+# How do we get test data for the accuracy assessment?
 
 ---
 
@@ -1326,13 +1339,29 @@ knitr::include_graphics('img/13_partitioning.png')
 
 ---
 
-#  Spatial cross validation 3
+class: inverse, center, middle
+
+## How does this compare to ideas we saw in CASA0005 (e.g. lag, error, GWR)
+
+## Did we test our models there
+
+## How did we deal with nearby points being related ?
+
+## Did we need to generalise for new data or not ?
+
+--
+
+### If not then we don't need to test the model
+
+---
+
+#  Spatial cross validation 2
 
 Lovelace et al. (2022) use a Support Vector Machine classifier that requires hyperparameters (set before the classification)
 
 Standard SVM then the classifier will try to **overfit** = perfect for the current data but useless for anything else...
 
-Cortes and Vapnik - **soft margin**, permit classifications = controlled with **C**
+Cortes and Vapnik - **soft margin**, permit misclassifications = controlled with **C**
 
 .pull-left[
 
@@ -1352,14 +1381,14 @@ knitr::include_graphics('img/soft_SVM.png')
 ]
 
 ]
-* **C** = adds penalty (proportional to distance from decision line) for each classified point. Small = image on right, large = image on left
+* **C** = adds penalty (proportional to distance from decision line) for each classified point. Small = image on right, large = image on left. **changes the slope**
 
 .small[Source:[Soner Yildirim](https://towardsdatascience.com/hyperparameter-tuning-for-support-vector-machines-c-and-gamma-parameters-6a5097416167)
 ]
 
 ---
 
-#  Spatial cross validation 4
+#  Spatial cross validation 3
 
 Lovelace et al. (2022) use a Support Vector Machine classifier that requires hyperparameters (set before the classification)
 
@@ -1391,7 +1420,7 @@ knitr::include_graphics('img/high_gamma.png')
 ]
 ---
 
-#  Spatial cross validation 5
+#  Spatial cross validation 4
 
 * **Performance level** each spatial fold (taken from our first k-means cross validation fold division). = Top row below, a typical cross validation fold...
 
@@ -1486,7 +1515,7 @@ class: inverse, center, middle
 
 ```{r include=FALSE}
 library(xaringanBuilder)
-build_pdf("index.html", complex_slides = TRUE)
+#build_pdf("index.html", complex_slides = TRUE)
 ```
 
 ---
