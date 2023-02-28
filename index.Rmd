@@ -500,12 +500,27 @@ all<-tibble(Band, Water, Vegetation, Soil)
 knitr::kable(head(all), format = 'html')
 ```
 
-We take the [inverse matrix](https://www.mathsisfun.com/algebra/matrix-inverse.html) of them ...
+left here is the pixel we are trying to model = end members * the fraction (proportion)
+
+$$\begin{bmatrix}band 3\\
+band 4 \\
+sum to 1
+\end{bmatrix} =\begin{bmatrix}p water & pveg & psoil\\
+p water & pveg & psoil\\
+1 & 1 & 1
+\end{bmatrix}
+\begin{bmatrix}f water\\
+f veg\\
+f soil
+\end{bmatrix}$$
+
+
+We take the [inverse matrix (^-1)](https://www.mathsisfun.com/algebra/matrix-inverse.html) of endmembers ...
 
 $$\begin{bmatrix}13 & 22 & 70\\
 5 & 80 & 60\\
 1 & 1 & 1
-\end{bmatrix} \begin{bmatrix}-0.0053 & -0.0127 & 1.1322\\
+\end{bmatrix} to... \begin{bmatrix}-0.0053 & -0.0127 & 1.1322\\
 -0.0145 & 0.0150 & 0.1137\\
 0.0198 & -0.0024 & -0.2460
 \end{bmatrix}$$
@@ -519,7 +534,7 @@ Then solve ... if our values for the pixel are **25** (band 3) and **57** (band 
 $$\begin{bmatrix}f_{water}\\
 f_{veg}\\
 f_{soil}
-\end{bmatrix}\begin{bmatrix}-0.0053 & -0.0127 & 1.1322\\
+\end{bmatrix}=\begin{bmatrix}-0.0053 & -0.0127 & 1.1322\\
 -0.0145 & 0.0150 & 0.1137\\
 0.0198 & -0.0024 & -0.2460
 \end{bmatrix} \begin{bmatrix}25\\
@@ -533,6 +548,9 @@ $$\left(\begin{matrix}
 \frac{-29}{2000}*25+\frac{3}{200}*57+\frac{1137}{10000}*1 \\
 \frac{99}{5000}*25+\frac{-3}{1250}*57+\frac{-123}{500}*1
 \end{matrix}\right)$$
+
+* Different denominators are just for the different values 
+
 ---
 # Sub pixel analysis 5
 
@@ -540,7 +558,7 @@ And gives...
 $$\begin{bmatrix}0.27\\
 0.61\\
 0.11
-\end{bmatrix}\begin{bmatrix}-0.0053 & -0.0127 & 1.1322\\
+\end{bmatrix}=\begin{bmatrix}-0.0053 & -0.0127 & 1.1322\\
 -0.0145 & 0.0150 & 0.1137\\
 0.0198 & -0.0024 & -0.2460
 \end{bmatrix} \begin{bmatrix}25\\
@@ -1515,7 +1533,7 @@ class: inverse, center, middle
 
 ```{r include=FALSE}
 library(xaringanBuilder)
-#build_pdf("index.html", complex_slides = TRUE)
+build_pdf("index.html", complex_slides = TRUE)
 ```
 
 ---
