@@ -32,7 +32,7 @@
     <script src="libs/tile-view/tile-view.js"></script>
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
-    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x9d6389fbec446669570a1befa314164","expires":1}</script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"a934ee29d6ec4253b3e96d3038aa9967","expires":1}</script>
     <script src="libs/himalaya/himalaya.js"></script>
     <link href="libs/editable/editable.css" rel="stylesheet" />
     <script src="libs/editable/editable.js"></script>
@@ -795,7 +795,7 @@ Overall accuracy is 77.89%
 ---
 # Kappa example
 
-&lt;img src="img/kappa_example.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/kappa_example.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 .small[Earth Systems Science and Remote Sensing](https://medium.com/@wenzhao.li1989/accuracy-assessment-d164e492274b)
 
@@ -1434,7 +1434,7 @@ Lovelace et al. (2022) use a Support Vector Machine classifier that requires hyp
 
 * **Tuning level** each fold (outer) is then divided into 5 again (inner fold).= Bottom row below
 
-*  **Performance estimation**  Use the 50 randomly selected hyperparameters in each of these inner subfolds, i.e., fit 250 models with random **C** and **Gamma** use the best values to outer fold, based on **AUROC** with testing data
+*  **Performance estimation**  Use the 50 randomly selected hyperparameters in each of these inner subfolds, i.e., fit 250 models with random **C** and **Gamma** use the best values to outer fold, based on **AUROC** with inner fold testing data. Note, this is not the main testing data. 
 
 
 &lt;img src="img/13_cv.png" width="65%" style="display: block; margin: auto;" /&gt;

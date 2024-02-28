@@ -1,0 +1,159 @@
+https://stackoverflow.com/questions/50866797/how-do-i-calculate-auc-from-two-continuous-variables-in-r
+
+```{r}
+library(pROC)
+
+# actual value
+a <- c(26.77814,29.34224,10.39203,29.66659,20.79306,20.73860,22.71488,29.93678,10.14384,32.63233,24.82544,38.14778,25.12343,23.07767,14.60789)
+
+# predicted value
+p <- c(27.238142,27.492240,13.542026,32.266587,20.473063,20.508603,21.414882,28.536775,18.313844,32.082333,24.545438,30.877776,25.703430,22.397666,15.627892)
+
+df <- data.frame(a = a, p = p)
+
+# order the data frame according to the actual values
+odf <- df[order(df$a),]
+
+# convert the actual values to an ordered binary classification 
+odf$a <- odf$a > 12 # arbitrarily decided to use 12 as the threshold
+
+# construct the roc object
+roc_obj <- roc(odf$a, odf$p)
+auc(roc_obj)
+# Area under the curve: 0.9615
+```
+## other
+
+https://www.geeksforgeeks.org/how-to-calculate-auc-area-under-curve-in-r/
+```{r}
+# sample data frame
+df_train <- data.frame( x= c(1,2,3,4,5),
+                  y= c(1,5,8,15,26),
+                  z=c(0,1,1,0,0))
+df_test <- data.frame( x= c(6,7,8),
+                  y= c(38,45,72),
+                  z=c(0,1,0))
+```
+
+```{r}
+# fit logistic model
+model <- glm(z ~ x+y, data=df_train)
+ 
+# predicted data
+prediction <- predict(model, df_test, 
+                      type="response")
+ 
+# create roc curve
+roc_object <- roc( df_test$z, prediction)
+ 
+# calculate area under curve
+auc(roc_object)
+```
+# Lovelace
+
+```{r}
+library(sf)
+library(terra)
+library(dplyr)
+library(future)             # parallel processing
+library(lgr)                # logging framework for R
+library(mlr3)               # unified interface to machine learning algorithms
+library(mlr3learners)       # most important machine learning algorithms
+library(mlr3extralearners)  # access to even more learning algorithms
+library(mlr3spatiotempcv)   # spatio-temporal resampling strategies
+library(mlr3tuning)         # hyperparameter tuning
+library(mlr3viz)            # plotting functions for mlr3 objects
+library(progressr)          # report progress updates
+```
+
+```{r}
+data("lsl", "study_mask", package = "spDataLarge")
+ta = terra::rast(system.file("raster/ta.tif", package = "spDataLarge"))
+```
+
+```{r}
+fit = glm(lslpts ~ slope + cplan + cprof + elev + log10_carea,
+          family = binomial(),
+          data = lsl)
+```
+
+```{r}
+class(fit)
+fit
+
+```
+
+```{r}
+pred_glm = predict(object = fit, type = "response")
+head(pred_glm)
+#>      1      2      3      4      5      6 
+#> 0.1901 0.1172 0.0952 0.2503 0.3382 0.1575
+```
+
+
+```{r}
+# making the prediction
+pred = terra::predict(ta, model = fit, type = "response")
+```
+
+```{r}
+pROC::auc(pROC::roc(lsl$lslpts, fitted(fit)))
+#> Area under the curve: 0.8216
+```
+```{r}
+library(mlr3)
+# 1. create task
+task = mlr3spatiotempcv::as_task_classif_st(
+  id = "ecuador_lsl",
+  backend = mlr3::as_data_backend(lsl), 
+  target = "lslpts", 
+  positive = "TRUE",
+  coordinate_names = c("x", "y"),
+  coords_as_features = FALSE,
+  crs = "EPSG:32717"
+  )
+```
+```{r}
+# plot response against each predictor
+mlr3viz::autoplot(task, type = "duo")
+# plot all variables against each other
+mlr3viz::autoplot(task, type = "pairs")
+```
+
+```{r}
+mlr3extralearners::list_mlr3learners(
+  filter = list(class = "classif", properties = "twoclass"), 
+  select = c("id", "mlr3_package", "required_packages")) |>
+  head()
+```
+
+```{r}
+learner = mlr3::lrn("classif.log_reg", predict_type = "prob")
+
+```
+
+```{r}
+resampling = mlr3::rsmp("repeated_spcv_coords", folds = 5, repeats = 100)
+
+```
+
+```{r}
+# reduce verbosity
+lgr::get_logger("mlr3")$set_threshold("warn")
+# run spatial cross-validation and save it to resample result glm (rr_glm)
+rr_spcv_glm = mlr3::resample(task = task,
+                             learner = learner,
+                             resampling = resampling)
+# compute the AUROC as a data.table
+score_spcv_glm = rr_spcv_glm$score(measure = mlr3::msr("classif.auc"))
+# keep only the columns you need
+score_spcv_glm = dplyr::select(score_spcv_glm, task_id, learner_id, 
+                               resampling_id, classif.auc)
+```
+
+```{r}
+mean(score_spcv_glm$classif.auc) |>
+  round(2)
+#> [1] 0.77
+```
+

@@ -772,7 +772,7 @@ $p_e$ expected cases correctly classified by chance (further equations in [Foody
 ---
 # Kappa example
 
-```{r echo=FALSE, out.width='100%', fig.align='center'}
+```{r echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('img/kappa_example.png')
 ```
 
@@ -1459,7 +1459,7 @@ knitr::include_graphics('img/high_gamma.png')
 
 * **Tuning level** each fold (outer) is then divided into 5 again (inner fold).= Bottom row below
 
-*  **Performance estimation**  Use the 50 randomly selected hyperparameters in each of these inner subfolds, i.e., fit 250 models with random **C** and **Gamma** use the best values to outer fold, based on **AUROC** with testing data
+*  **Performance estimation**  Use the 50 randomly selected hyperparameters in each of these inner subfolds, i.e., fit 250 models with random **C** and **Gamma** use the best values to outer fold, based on **AUROC** with inner fold testing data. Note, this is not the main testing data. 
 
 
 ```{r echo=FALSE, out.width='65%', fig.align='center'}
