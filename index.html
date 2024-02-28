@@ -32,7 +32,7 @@
     <script src="libs/tile-view/tile-view.js"></script>
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
-    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"a934ee29d6ec4253b3e96d3038aa9967","expires":1}</script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x328df5c9c9049e3b51a0aae244bf0e0","expires":1}</script>
     <script src="libs/himalaya/himalaya.js"></script>
     <link href="libs/editable/editable.css" rel="stylesheet" />
     <script src="libs/editable/editable.js"></script>
@@ -738,8 +738,8 @@ Example
 
 &lt;img src="img/accuracy_2.png" width="100%" style="display: block; margin: auto;" /&gt;
 
-.small[Source:[Earth Systems Science and Remote Sensing](https://medium.com/@wenzhao.li1989/accuracy-assessment-d164e492274b)]
-]
+.small[Source:[Earth Systems Science and Remote Sensing](https://medium.com/@wenzhao.li1989/accuracy-assessment-d164e492274b)]]
+
 ---
 # Accuracy assessment 6
 
@@ -1432,12 +1432,12 @@ Lovelace et al. (2022) use a Support Vector Machine classifier that requires hyp
 
 * **Performance level** each spatial fold (taken from our first k-means cross validation fold division). = Top row below, a typical cross validation fold...
 
-* **Tuning level** each fold (outer) is then divided into 5 again (inner fold).= Bottom row below
+* **Tuning level** each fold (outer) is then divided into 5 again (inner fold).= Bottom row below. Test data is from the fold, not instance test data.
 
 *  **Performance estimation**  Use the 50 randomly selected hyperparameters in each of these inner subfolds, i.e., fit 250 models with random **C** and **Gamma** use the best values to outer fold, based on **AUROC** with inner fold testing data. Note, this is not the main testing data. 
 
 
-&lt;img src="img/13_cv.png" width="65%" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/13_cv.png" width="55%" style="display: block; margin: auto;" /&gt;
 .small[Schematic of hyperparameter tuning and performance estimation levels in CV. (Figure was taken from Schratz et al. (2019).. Source:[Lovelace et al. 2022](https://geocompr.robinlovelace.net/spatial-cv.html)
 ]
 

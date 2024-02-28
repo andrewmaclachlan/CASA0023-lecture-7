@@ -713,8 +713,8 @@ knitr::include_graphics('img/example_matrix.PNG')
 knitr::include_graphics('img/accuracy_2.png')
 ```
 
-.small[Source:[Earth Systems Science and Remote Sensing](https://medium.com/@wenzhao.li1989/accuracy-assessment-d164e492274b)]
-]
+.small[Source:[Earth Systems Science and Remote Sensing](https://medium.com/@wenzhao.li1989/accuracy-assessment-d164e492274b)]]
+
 ---
 # Accuracy assessment 6
 
@@ -1457,12 +1457,12 @@ knitr::include_graphics('img/high_gamma.png')
 
 * **Performance level** each spatial fold (taken from our first k-means cross validation fold division). = Top row below, a typical cross validation fold...
 
-* **Tuning level** each fold (outer) is then divided into 5 again (inner fold).= Bottom row below
+* **Tuning level** each fold (outer) is then divided into 5 again (inner fold).= Bottom row below. Test data is from the fold, not instance test data.
 
 *  **Performance estimation**  Use the 50 randomly selected hyperparameters in each of these inner subfolds, i.e., fit 250 models with random **C** and **Gamma** use the best values to outer fold, based on **AUROC** with inner fold testing data. Note, this is not the main testing data. 
 
 
-```{r echo=FALSE, out.width='65%', fig.align='center'}
+```{r echo=FALSE, out.width='55%', fig.align='center'}
 knitr::include_graphics('img/13_cv.png')
 ```
 .small[Schematic of hyperparameter tuning and performance estimation levels in CV. (Figure was taken from Schratz et al. (2019).. Source:[Lovelace et al. 2022](https://geocompr.robinlovelace.net/spatial-cv.html)
@@ -1547,8 +1547,8 @@ class: inverse, center, middle
   * Spatial cross validation
 
 ```{r include=FALSE}
-#library(xaringanBuilder)
-#build_pdf("index.html", complex_slides = TRUE)
+library(xaringanBuilder)
+build_pdf("index.html", complex_slides = TRUE)
 ```
 
 ---
