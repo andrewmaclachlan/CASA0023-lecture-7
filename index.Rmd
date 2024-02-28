@@ -183,6 +183,7 @@ class: inverse, center, middle
 
 * skill differential between the non-expert and expert groups
 * linearly interpolating the distributions per-pixel from their one-hot encoding, weight on 0.2 experts and 0.3 non-experts
+* ~82% confidence on the true class for experts and ~73% confidence on the true class for the non-expert
 
 ]
 .panel[.panel-name[Pre-processing]
@@ -190,7 +191,6 @@ class: inverse, center, middle
 * Use SR for labelling BUT used TOA (level L1C) for the model as SR only from 2017
 * Masked clouds and shadows
 * Weights for each pixel (I think these are the probabilities for each pixel based on the user weights)
-  * They work out the 
 * Augmentations - rotation of image (rotate them) bands (band ratioing) to improve model
 ]
 
@@ -378,9 +378,9 @@ knitr::include_graphics('img/SLIC.png')
 
 * $k$ = number of super pixels
 
-* $compactness$ = impact of spatial (higher value) vs colour (lower value)
+* $compactness$ = impact of spatial (higher value = sqaures) vs colour (lower value)
 
-* $transform$ = not on raw data, but to LAB colour space
+* $transform$ = not on raw data, but to LAB colour space (L*a*b*, is a color space defined by the International Commission on Illumination (abbreviated CIE))
 
 * We can then take the [average values per object](https://jakubnowosad.com/ogh2021/#24) and classify them using methods we've seen
 
@@ -607,9 +607,10 @@ After producing and output we need to assign an accuracy value to it (common to 
 
 In remote sensing we focus on:
 
-* PA Producer accuracy (recall or true positive rate or sensitivity)
-* UA User’s accuracy (consumer’s accuracy or precision or
-positive predictive value
+* PA Producer accuracy (recall or true positive rate or sensitivity) - vertical
+**the classification results meet the expectation of the creator**
+* UA User’s accuracy (consumer’s accuracy or precision or positive predictive value) - horizontal
+**pixels are incorrectly classified as a known class when they should have been classified as something else**
 * OA the (overall) accuracy
 ]
 
@@ -694,13 +695,12 @@ knitr::include_graphics('img/example_matrix.PNG')
 * Errors of omission (100-producer's accuracy)
   * Landcover omitted from correct class
   * Type 1 error
-  * Urban = 1/23, 4%
+  * Urban = (22/22+1) $\frac{TP}{TP+FN}$
   * Urban producer = 22/23, 95.65%
    
 * Errors of commission (100- user's accuracy)
   * Classified sites for incorrect classifications
-  * Urban = 9/31, 29%
-  * Urban user = 7/31, 22.58%
+  * Urban user = (22/22+9), 70.97% $\frac{TP}{TP+FP}$
 
 * Kappa coefficient
 
@@ -727,7 +727,7 @@ Producer accuracy ...
 
 User accuracy ... 
 
-> as a user i only find that only 22.58% of the time when i visit an urban area is it acutally urban
+> as a user i only find that only 70.97% of the time when i visit an urban area is it acutally urban
 
 Overall accuracy is 77.89%
 
@@ -764,12 +764,23 @@ knitr::include_graphics('img/accuracy_2.png')
 $k=\frac{p_o - p_e}{1- p_e}$
 ]
 
-$p_o$ is the proportion of cases correctly classified (accuracy)
+$p_o$ is the proportion of cases correctly classified (accuracy) $\frac{TP +TN}{TP+FP+FN+TN}$
 
 $p_e$ expected cases correctly classified by chance (further equations in [Foody 2020](https://reader.elsevier.com/reader/sd/pii/S0034425719306509?token=47B253784FA5346F4A2E26B6DA796DBE71DC53A34AE76AAB1FFA43927EC021937C0C108A42154C4AE774083E4C7BD52F&originRegion=eu-west-1&originCreation=20220707132403)) or [Earth Systems Science and Remote Sensing](https://medium.com/@wenzhao.li1989/accuracy-assessment-d164e492274b)
 
 .small[Source:[Explaining the unsuitability of the kappa coefficient in the assessment and comparison of the accuracy of thematic maps obtained by image classification. Foody 2020](https://reader.elsevier.com/reader/sd/pii/S0034425719306509?token=47B253784FA5346F4A2E26B6DA796DBE71DC53A34AE76AAB1FFA43927EC021937C0C108A42154C4AE774083E4C7BD52F&originRegion=eu-west-1&originCreation=20220707132403)]
 ---
+# Kappa example
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('img/kappa_example.png')
+```
+
+.small[Earth Systems Science and Remote Sensing](https://medium.com/@wenzhao.li1989/accuracy-assessment-d164e492274b)
+
+---
+
+
 # Kappa issues 
 
 
@@ -1073,7 +1084,7 @@ Receiver Operating Characteristic Curve (the ROC Curve)
 * True positive rate = good =every plane is a plane ?
 * False positive rate = good = every cloud is predicted as noise (not a plane) ?
 
-when threshold is 0
+when threshold is 0 (everything classified as plane)
 
 > all planes are planes = TPR = 1
 
@@ -1099,7 +1110,7 @@ knitr::include_graphics('img/ROC_planes.png')
 
 # Receiver Operating Characteristic Curve
 
-> Goal: Maximise true positives and minimise false positives...
+> Goal: Maximise true positives and minimise false positives...(e.g. urban vs other landcover)
 
 ```{r echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics('img/ROC.png')
@@ -1133,6 +1144,8 @@ knitr::include_graphics('img/AUC.png')
 ```
 
 .small[Source:[MLU-EXPLAIN](https://mlu-explain.github.io/roc-auc/)]
+
+* used to determine how well your **binary** classifier stands up to a [gold standard binary classifier. There is also a mutli-class method that follows one vs one or one vs rest discussed last time](https://towardsdatascience.com/multiclass-classification-evaluation-with-roc-curves-and-roc-auc-294fd4617e3a)
 
 ]
 
@@ -1244,7 +1257,9 @@ knitr::include_graphics('img/cross.jpg')
 
 * An extreme version of cross validation
 
-* Uses all the training data except 1
+* Only for smaller datasets
+
+* Uses all the data except 1, this 1 is the testing set
 
 * Repeats though all of it
 
@@ -1532,8 +1547,8 @@ class: inverse, center, middle
   * Spatial cross validation
 
 ```{r include=FALSE}
-library(xaringanBuilder)
-build_pdf("index.html", complex_slides = TRUE)
+#library(xaringanBuilder)
+#build_pdf("index.html", complex_slides = TRUE)
 ```
 
 ---
