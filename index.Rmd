@@ -19,7 +19,7 @@ output:
 options(htmltools.dir.version = FALSE)
 ```
 
-```{r xaringan-all, echo=FALSE}
+```{r xaringan-all, echo=FALSE, warning=FALSE}
 library(countdown)
 library(xaringan)
 library(xaringanExtra)
@@ -72,6 +72,7 @@ library(fontawesome)
 ### 28/06/2022 (updated: `r format(Sys.time(), "%d/%m/%Y")`)
 
 `r fa("paper-plane", fill = "#562457")` [a.maclachlan@ucl.ac.uk](mailto:a.maclachlan@ucl.ac.uk)
+`r fa("globe", fill = "#562457")` [andymac.uk](https://www.andymac.uk/)
 `r fa("twitter", fill = "#562457")` [andymaclachlan](https://twitter.com/andymaclachlan)
 `r fa("github", fill = "#562457")` [andrewmaclachlan](https://github.com/andrewmaclachlan)
 `r fa("location-dot", fill = "#562457")` [Centre for Advanced Spatial Analysis, UCL](https://www.ucl.ac.uk/bartlett/casa/)
@@ -183,6 +184,9 @@ class: inverse, center, middle
 
 * skill differential between the non-expert and expert groups
 * linearly interpolating the distributions per-pixel from their one-hot encoding, weight on 0.2 experts and 0.3 non-experts
+
+> chat GPT "This suggests that instead of treating the classification as a strict single-label (e.g., "this pixel is 100% 'trees'"), the probabilities of each class are interpolated over time or space to provide a smoother transition."
+
 * ~82% confidence on the true class for experts and ~73% confidence on the true class for the non-expert
 
 ]
@@ -1039,6 +1043,8 @@ Receiver Operating Characteristic Curve (the ROC Curve)
 
 * Maximise true positives (1) and minimise false positives (0)
 
+* plot starts from right - threshold 0 then TPR and FPR both 1 (right of the plot)
+
 ```{r echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics('img/ROC_planes.png')
 ```
@@ -1358,7 +1364,7 @@ class: inverse, center, middle
 
 * stops our training data and testing data being near each other...
   
-  > in other words this makes sure all the points (or pixels) we train the model with a far away from the points (or pixels) we test the model with
+  > in other words this makes sure all the points (or pixels) we train the model with are far away from the points (or pixels) we test the model with
 
 ]
 
@@ -1391,6 +1397,8 @@ class: inverse, center, middle
 #  Spatial cross validation 2
 
 Lovelace et al. (2022) use a Support Vector Machine classifier that requires hyperparameters (set before the classification)
+
+**this is on the training data** (e.g. band 4 between grass and urban land cover)
 
 Standard SVM then the classifier will try to **overfit** = perfect for the current data but useless for anything else...
 
@@ -1546,10 +1554,15 @@ class: inverse, center, middle
   * Object based image analysis 
   * Spatial cross validation
 
-```{r include=FALSE}
-library(xaringanBuilder)
-build_pdf("index.html", complex_slides = TRUE)
+```{r include=FALSE, eval=FALSE}
+library(renderthis)
+# options(timeout = 300)
+# renderthis::to_pdf("index.Rmd")
+
+pagedown::chrome_print("index.html", timeout=600)
 ```
+
+
 
 ---
 
